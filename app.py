@@ -137,4 +137,58 @@ def lab1():
     </html>
     '''
     
+    # Роуты для генерации ошибок
+@app.route('/lab1/400')
+def error_400():
+    abort(400)
+
+@app.route('/lab1/401')
+def error_401():
+    abort(401)
+
+@app.route('/lab1/402')
+def error_402():
+    abort(402)
+
+@app.route('/lab1/403')
+def error_403():
+    abort(403)
+
+@app.route('/lab1/405')
+def error_405():
+    abort(405)
+
+@app.route('/lab1/418')
+def error_418():
+    abort(418)
+
+# Обработчики ошибок
+@app.errorhandler(400)
+def bad_request(error):
+    return render_template('400.html'), 400
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template('401.html'), 401
+
+@app.errorhandler(402)
+def payment_required(error):
+    return render_template('402.html'), 402
+
+@app.errorhandler(403)
+def forbidden(error):
+    return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(405)
+def method_not_allowed(error):
+    return render_template('405.html'), 405
+
+@app.errorhandler(418)
+def teapot(error):
+    return render_template('418.html'), 418
+    
     
