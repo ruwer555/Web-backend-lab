@@ -9,6 +9,6 @@ def start():
                 <h1>web-сервер на flask<h1> 
                 <a href="/author">author</a>
             </body> 
-        </html>"""efww
+        </html>"""
 
 
