@@ -47,10 +47,20 @@ count=0
 def counter():
     global count
     count += 1
-
+    time = datetime.datetime.today()
+    url = request.url
+    client_ip = request.remote_addr
     return """<!doctype html> 
     <html> 
         <body> 
             Сколько раз вы сюда заходили: ''' + srt(count) + '''
+            <hr>
+            Дата и время: ''' + time + ''' <br>
+            Запрошенный адрес: ''' + url + ''' <br>
+            Ваш IP адрес: ''' + client_ip + '''<br>
         </body> 
     </html>"""
+
+@app.route("/info")
+def info():
+    return redirect("/author")
