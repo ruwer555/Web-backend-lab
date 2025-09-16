@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>404 - Страница не найдена</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lab1.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center; padding: 50px 20px;">
+            <h1 style="font-size: 120px; color: #e74c3c; margin: 0;">404</h1>
+            <p style="font-size: 24px; color: #7f8c8d;">Страница не найдена</p>
+            <p>Запрашиваемая страница не существует или была перемещена.</p>
+            <img src="{{ url_for('static', filename='image.jpg') }}" alt="Ошибка 404" style="width: 300px; height: 200px; border-radius: 10px; margin: 20px 0;">
+            <br>
+            <a href="{{ url_for('index') }}" style="background: #3498db; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; display: inline-block; margin: 10px;">На главную</a>
+            <a href="{{ url_for('lab1') }}" style="background: #2ecc71; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; display: inline-block; margin: 10px;">К лабораторным</a>
+        </div>
+    </div>
+</body>
+</html>
