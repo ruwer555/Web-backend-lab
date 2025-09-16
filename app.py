@@ -6,20 +6,20 @@ app = Flask(__name__)
 def not_found(err):
     return "нет такой страницы", 404
 
-@app.route("/web")
+@app.route('/lab1/web')
 def web():
     return """<!doctype html> 
     <html> 
         <body> 
             <h1>web-сервер на flask<h1> 
-            <a href="/author">author</a>
+            <a href="/lab1/author">author</a>
         </body> 
     </html>""", 200, {
         'X-Server': 'sample',
         'Content-Type': 'text/plain; charset=utf-8'
     }
 
-@app.route("/author")
+@app.route('/lab1/author')
 def author():
     name = "Копылов Владимир Вячеславович"
     group = "ФБИ-31"
@@ -31,7 +31,7 @@ def author():
             <p>Студент: """ + name + """<p>
             <p>Группа: """ + group + """<p> 
             <p>Факультет: """ + faculty + """<p> 
-            <a href="/web">web</a>
+            <a href="/lab1/web">web</a>
         </body> 
     </html>"""
 
@@ -44,13 +44,13 @@ def image():
             <body> 
                 <h1>Дуб<h1>
                 <img src="''' + path + '''">
-                <a href="/author">author</a>
+                <a href="/lab1/author">author</a>
             </body> 
         </html>"""
         
 count=0
 
-@app.route("/counter")
+@app.route('/lab1/counter')
 def counter():
     global count
     if 'counter' not in session:
@@ -70,7 +70,7 @@ def counter():
         </body> 
     </html>"""
     
-@app.route("/info")
+@app.route('/lab1/info')
 def info():
     return redirect("/author")
 
@@ -78,3 +78,33 @@ def info():
 def clear_counter():
     session.pop('counter', None)
     return redirect(url_for('counter'))
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return '''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>НГТУ, ФБ, Лабораторные работы</title>
+        <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+            </div>
+            
+            <div class="menu">
+                <ul>
+                    <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer">
+                <p>Копылов Владимир Вячеславовович, группа ФБИ-31, 3 курс, 2025 год</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    '''
