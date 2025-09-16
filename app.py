@@ -1,7 +1,14 @@
 from flask import Flask
 app = Flask(__name__)
 
-@app.route("/web")
-def web():
-    return "web-сервер на flask"
-                
+@app.route("/")
+def start():
+    return """<!doctype html> 
+        <html> 
+            <body> 
+                <h1>web-сервер на flask<h1> 
+                <a href="/author">author</a>
+            </body> 
+        </html>"""efww
+
+
