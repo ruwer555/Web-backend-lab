@@ -191,4 +191,12 @@ def method_not_allowed(error):
 def teapot(error):
     return render_template('418.html'), 418
     
-    
+@app.route('/lab1/500')
+def error_500():
+    # Вызываем ошибку деления на ноль
+    result = 1 / 0
+    return "Этот код никогда не выполнится"
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html'), 500
