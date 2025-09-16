@@ -14,7 +14,10 @@ def web():
             <h1>web-сервер на flask<h1> 
             <a href="/author">author</a>
         </body> 
-    </html>"""
+    </html>""", 200, {
+        'X-Server': 'sample',
+        'Content-Type': 'text/plain; charset=utf-8'
+    }
 
 @app.route("/author")
 def author():
@@ -50,7 +53,9 @@ count=0
 @app.route("/counter")
 def counter():
     global count
-    count += 1
+    if 'counter' not in session:
+        session['counter'] = 0
+    session['counter'] += 1
     time = datetime.datetime.today()
     url = request.url
     client_ip = request.remote_addr
@@ -68,3 +73,8 @@ def counter():
 @app.route("/info")
 def info():
     return redirect("/author")
+
+@app.route('/counter_clear')
+def clear_counter():
+    session.pop('counter', None)
+    return redirect(url_for('counter'))
