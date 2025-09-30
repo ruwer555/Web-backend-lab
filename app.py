@@ -332,31 +332,31 @@ def index():
     return '''
     <!DOCTYPE html>
     <html>
-    <head>
-        <title>НГТУ, ФБ, Лабораторные работы</title>
-        <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+        <head>
+            <title>НГТУ, ФБ, Лабораторные работы</title>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+                </div>
+                
+                <div class="menu">
+                    <ol>
+                        <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
+                        <li><a href="''' + url_for('lab2') + '''">Вторая лабораторная</a></li>
+                        <li><a href="''' + url_for('lab1') + '''">Третья лабораторная</a></li>
+                        <li><a href="''' + url_for('lab1') + '''">Четвертая лабораторная</a></li>
+                        <li><a href="''' + url_for('lab1') + '''">Пятая лабораторная</a></li>
+                    </ol>
+                </div>
+                
+                <div class="footer">
+                    <p>Копылов Владимир Вячеславовович, группа ФБИ-31, 3 курс, 2025 год</p>
+                </div>
             </div>
-            
-            <div class="menu">
-                <ol>
-                    <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
-                    <li><a href="''' + url_for('lab1') + '''">Вторая лабораторная</a></li>
-                    <li><a href="''' + url_for('lab1') + '''">Третья лабораторная</a></li>
-                    <li><a href="''' + url_for('lab1') + '''">Четвертая лабораторная</a></li>
-                    <li><a href="''' + url_for('lab1') + '''">Пятая лабораторная</a></li>
-                </ol>
-            </div>
-            
-            <div class="footer">
-                <p>Копылов Владимир Вячеславовович, группа ФБИ-31, 3 курс, 2025 год</p>
-            </div>
-        </div>
-    </body>
+        </body>
     </html>
     '''
 @app.route('/lab1')
@@ -364,35 +364,35 @@ def lab1():
     return '''
     <!DOCTYPE html>
     <html>
-    <head>
-        <title>Лабораторная 1</title>
-        <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>Лабораторная работа 1</h1>
+        <head>
+            <title>Лабораторная 1</title>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Лабораторная работа 1</h1>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <p>Flask — фреймворк для создания веб-приложений на языке
+                    программирования Python, использующий набор инструментов
+                    Werkzeug, а также шаблонизатор Jinja2. Относится к категории так
+                    называемых микрофреймворков — минималистичных каркасов
+                    веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
+                </div>
+                <hr>
+                <h2>Все роуты</h2>
+                <ul>
+                    <li><a href="/index">Курс</a></li>
+                    <li><a href="400">Ошибки</a></li>
+                    <li><a href="/lab1/author">Автор</a></li>
+                    <li><a href="/lab1/image">Картинка</a></li>
+                    <li><a href="/lab1/web">WEB</a></li>
+                    <li><a href="/lab1/counter">Счетчик</a></li>
+                </ul>
             </div>
-            
-            <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <p>Flask — фреймворк для создания веб-приложений на языке
-                программирования Python, использующий набор инструментов
-                Werkzeug, а также шаблонизатор Jinja2. Относится к категории так
-                называемых микрофреймворков — минималистичных каркасов
-                веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
-            </div>
-            <hr>
-            <h2>Все роуты</h2>
-            <ul>
-                <li><a href="/index">Курс</a></li>
-                <li><a href="400">Ошибки</a></li>
-                <li><a href="/lab1/author">Автор</a></li>
-                <li><a href="/lab1/image">Картинка</a></li>
-                <li><a href="/lab1/web">WEB</a></li>
-                <li><a href="/lab1/counter">Счетчик</a></li>
-            </ul>
-        </div>
-    </body>
+        </body>
     </html>
     '''
 @app.route('/lab2/a')
@@ -403,7 +403,7 @@ def a():
 def a2():
     return "со слэшем"
 
-flowers_list = ('роза', 'тюльпан', 'незабудка', 'ромашка')
+flowers_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
 
 @app.route("/lab2/flowers/<int:flower_id>")
 def flowers(flower_id):
@@ -412,8 +412,58 @@ def flowers(flower_id):
     else:
         return "Цветок:" + flowers_list[flower_id]
     
-    
-    
+@app.route("/lab2/add_flower/<name>")
+def add_flowers(name):
+    flowers_list.append(name)
+    return f'''
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <h1>Добавлен новый цветок</h1>
+            <p>Название нового цветка: {name} </p>
+            <p>Всего цветов: {len(flowers_list)}</p>
+            <p>Полный список: {flowers_list}</p>
+        </body>
+    </html>
+    '''
+     
+     
+@app.route('/lab2')
+def lab2():
+    return '''
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Лабораторная 1</title>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Лабораторная работа 1</h1>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <p>Flask — фреймворк для создания веб-приложений на языке
+                    программирования Python, использующий набор инструментов
+                    Werkzeug, а также шаблонизатор Jinja2. Относится к категории так
+                    называемых микрофреймворков — минималистичных каркасов
+                    веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
+                </div>
+                <hr>
+                <h2>Все роуты</h2>
+                <ul>
+                    <li><a href="/index">Курс</a></li>
+                    <li><a href="400">Ошибки</a></li>
+                    <li><a href="/lab1/author">Автор</a></li>
+                    <li><a href="/lab1/image">Картинка</a></li>
+                    <li><a href="/lab1/web">WEB</a></li>
+                    <li><a href="/lab1/counter">Счетчик</a></li>
+                </ul>
+            </div>
+        </body>
+    </html>
+    '''
     
     
     
