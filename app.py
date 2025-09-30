@@ -1,23 +1,250 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, abort, make_response
+from werkzeug.exceptions import HTTPException
 import datetime
 app = Flask(__name__)
 
+@app.errorhandler(400)
+def bad_request(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 400 - Плохой запрос<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 400
+
+@app.errorhandler(401)
+def unauthorized(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 401 - Неавторизован<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 401
+    
+# Создаем кастомный класс для ошибки 402
+class PaymentRequired(HTTPException):
+    code = 402
+    description = 'Требуется оплата'
+
+# Регистрируем обработчик
+@app.errorhandler(PaymentRequired)
+def payment_required(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 402 - Требуется оплата<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 402
+    
+@app.errorhandler(403)
+def forbidden(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 403 - Запрещено<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 403
+
 @app.errorhandler(404)
 def not_found(err):
-    return "нет такой страницы", 404
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 404 - Не найдено<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 404
+    
+@app.errorhandler(405)
+def method_not_allowed(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 405 - Метод не разрешен<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 405
+    
+@app.errorhandler(418)
+def teapot(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 418 - Я чайник!<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 418
+    
+@app.errorhandler(500)
+def internal_server_error(err):
+    return '''<!doctype html> 
+    <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
+        <body> 
+            <h1>Ошибка 500 - Внутренняя ошибка сервера<h1> 
+            <ul>
+                <li><a href="/400">Ошибка 400</a></li>
+                <li><a href="/401">Ошибка 401</a></li>
+                <li><a href="/402">Ошибка 402</a></li>
+                <li><a href="/403">Ошибка 403</a></li>
+                <li><a href="/404">Ошибка 404</a></li>
+                <li><a href="/405">Ошибка 405</a></li>
+                <li><a href="/418">Ошибка 418</a></li>
+                <li><a href="/500">Ошибка 500</a></li>
+                <li><a href="/lab1">На главную</a></li>
+            </ul>
+        </body> 
+    </html>''', 500
+
+# Маршруты для вызова ошибок
+@app.route('/400')
+def trigger_400():
+    abort(400)
+
+@app.route('/401')
+def trigger_401():
+    abort(401)
+
+@app.route('/402')
+def trigger_402():
+    raise PaymentRequired()
+
+@app.route('/403')
+def trigger_403():
+    abort(403)
+
+@app.route('/404')
+def trigger_404():
+    abort(404)
+
+@app.route('/405')
+def trigger_405():
+    abort(405)
+
+@app.route('/418')
+def trigger_418():
+    abort(418)
+    
+@app.route('/500')
+def trigger_500():
+    # Вызываем реальную ошибку 500 через деление на ноль
+    result = 10 / 0
+    return f'Результат: {result}'
 
 @app.route('/lab1/web')
 def web():
-    return """<!doctype html> 
+    return '''<!doctype html> 
     <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
         <body> 
             <h1>web-сервер на flask<h1> 
-            <a href="/lab1/author">author</a>
+            <div>
+                <a href="/lab1">На главную</a>
+            </div>
         </body> 
-    </html>""", 200, {
-        'X-Server': 'sample',
-        'Content-Type': 'text/plain; charset=utf-8'
-    }
+    </html>''', 200, #{
+        #'X-Server': 'sample',
+        #'Content-Type': 'text/plain; charset=utf-8'
+    #}
 
 @app.route('/lab1/author')
 def author():
@@ -25,59 +252,77 @@ def author():
     group = "ФБИ-31"
     faculty = "ФБ"
 
-    return """<!doctype html> 
-    <html> 
-        <body> 
-            <p>Студент: """ + name + """<p>
-            <p>Группа: """ + group + """<p> 
-            <p>Факультет: """ + faculty + """<p> 
-            <a href="/lab1/web">web</a>
-        </body> 
-    </html>"""
-
-@app.route("/image")
-def image():
-    path=url_for("static", filename="dub.jpg")
-
-    return """<!doctype html> 
+    return '''<!doctype html> 
         <html> 
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
+            <body> 
+                <p>Студент: ''' + name + '''<p>
+                <p>Группа: ''' + group + '''<p> 
+                <p>Факультет: ''' + faculty + '''<p> 
+                <div>
+                    <a href="/lab1">На главную</a>
+                </div>
+            </body> 
+        </html>'''
+
+@app.route('/lab1/image')
+def image():
+    path = url_for("static", filename="Dub.jpg")
+    html_image = '''<!doctype html> 
+        <html> 
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
             <body> 
                 <h1>Дуб<h1>
                 <img src="''' + path + '''">
-                <a href="/lab1/author">author</a>
+                <div>
+                    <a href="/lab1">На главную</a>
+                </div>
             </body> 
-        </html>"""
-        
+        </html>'''
+    response = make_response(html_image)
+    response.headers['Content-Language'] = 'ru'
+    return response
+       
 count=0
 
+@app.route('/lab1/clear_counter')
+def clear_counter():
+    global count
+    count = -1
+    return redirect("/lab1/counter")
+        
 @app.route('/lab1/counter')
 def counter():
     global count
-    if 'counter' not in session:
-        session['counter'] = 0
-    session['counter'] += 1
+    count += 1
     time = datetime.datetime.today()
     url = request.url
     client_ip = request.remote_addr
-    return """<!doctype html> 
+    return '''<!doctype html> 
     <html> 
+        <head>
+            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+        </head>
         <body> 
-            Сколько раз вы сюда заходили: ''' + srt(count) + '''
+            Сколько раз вы сюда заходили: ''' + str(count) + '''
             <hr>
-            Дата и время: ''' + time + ''' <br>
-            Запрошенный адрес: ''' + url + ''' <br>
-            Ваш IP адрес: ''' + client_ip + '''<br>
+            Дата и время: ''' + str(time) + ''' <br>
+            Запрошенный адрес: ''' + str(url) + ''' <br>
+            Ваш IP адрес: ''' + str(client_ip) + '''<br>
         </body> 
-    </html>"""
+        <ul>
+            <a href="/lab1/clear_counter">Очищение счетчика</a>
+            <a href="/lab1">На главную</a>
+        </ul>
+    </html>'''
     
 @app.route('/lab1/info')
 def info():
-    return redirect("/author")
-
-@app.route('/counter_clear')
-def clear_counter():
-    session.pop('counter', None)
-    return redirect(url_for('counter'))
+    return redirect("/lab1/author")
 
 @app.route('/')
 @app.route('/index')
@@ -96,9 +341,13 @@ def index():
             </div>
             
             <div class="menu">
-                <ul>
+                <ol>
                     <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
-                </ul>
+                    <li><a href="''' + url_for('lab1') + '''">Вторая лабораторная</a></li>
+                    <li><a href="''' + url_for('lab1') + '''">Третья лабораторная</a></li>
+                    <li><a href="''' + url_for('lab1') + '''">Четвертая лабораторная</a></li>
+                    <li><a href="''' + url_for('lab1') + '''">Пятая лабораторная</a></li>
+                </ol>
             </div>
             
             <div class="footer">
@@ -130,73 +379,27 @@ def lab1():
                 называемых микрофреймворков — минималистичных каркасов
                 веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
             </div>
-            
-            <a href="''' + url_for('/') + '''" style="background: #3498db; color: white; padding: 12px 24px; border-radius: 5px; text-decoration: none; display: inline-block; margin: 10px;">На главную</a>
+            <hr>
+            <h2>Все роуты</h2>
+            <ul>
+                <li><a href="/index">Курс</a></li>
+                <li><a href="400">Ошибки</a></li>
+                <li><a href="/lab1/author">Автор</a></li>
+                <li><a href="/lab1/image">Картинка</a></li>
+                <li><a href="/lab1/web">WEB</a></li>
+                <li><a href="/lab1/counter">Счетчик</a></li>
+            </ul>
         </div>
     </body>
     </html>
     '''
+@app.route('/lab2/a')
+def a():
+    return "ok"
     
-    # Роуты для генерации ошибок
-@app.route('/lab1/400')
-def error_400():
-    abort(400)
-
-@app.route('/lab1/401')
-def error_401():
-    abort(401)
-
-@app.route('/lab1/402')
-def error_402():
-    abort(402)
-
-@app.route('/lab1/403')
-def error_403():
-    abort(403)
-
-@app.route('/lab1/405')
-def error_405():
-    abort(405)
-
-@app.route('/lab1/418')
-def error_418():
-    abort(418)
-
-# Обработчики ошибок
-@app.errorhandler(400)
-def bad_request(error):
-    return render_template('400.html'), 400
-
-@app.errorhandler(401)
-def unauthorized(error):
-    return render_template('401.html'), 401
-
-@app.errorhandler(402)
-def payment_required(error):
-    return render_template('402.html'), 402
-
-@app.errorhandler(403)
-def forbidden(error):
-    return render_template('403.html'), 403
-
-@app.errorhandler(404)
-def not_found(error):
-    return render_template('404.html'), 404
-
-@app.errorhandler(405)
-def method_not_allowed(error):
-    return render_template('405.html'), 405
-
-@app.errorhandler(418)
-def teapot(error):
-    return render_template('418.html'), 418
     
-@app.route('/lab1/500')
-def error_500():
-    # Вызываем ошибку деления на ноль
-    result = 1 / 0
-    return "Этот код никогда не выполнится"
-
-@app.errorhandler(500)
-def internal_server_error(error):
-    return render_template('500.html'), 500
+    
+    
+    
+    
+    
