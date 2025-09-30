@@ -1,0 +1,234 @@
+/* ===== БАЗОВЫЕ СТИЛИ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ===== КОНТЕЙНЕР ===== */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ===== ШАПКА ===== */
+.header {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== МЕНЮ ===== */
+.menu {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu ol {
+    list-style: none;
+}
+
+.menu li {
+    margin-bottom: 0.8rem;
+}
+
+.menu a {
+    display: block;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.menu a:hover {
+    background: #667eea;
+    color: white;
+    transform: translateX(5px);
+}
+
+/* ===== СТРАНИЦЫ ОШИБОК ===== */
+.error-container {
+    background: white;
+    padding: 3rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.error-code {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.error-description {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+/* ===== КНОПКИ ===== */
+.home-link {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.home-link:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ===== СТРАНИЦА С КАРТИНКОЙ ===== */
+.image-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.image-container h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+/* ===== СТРАНИЦА АВТОРА ===== */
+.author-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.author-info p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+/* ===== СЧЕТЧИК ===== */
+.counter-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-size: 1.1rem;
+}
+
+.counter-info strong {
+    color: #667eea;
+}
+
+/* ===== ПОДВАЛ ===== */
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* ===== СПИСКИ НА СТРАНИЦАХ ===== */
+ul {
+    list-style: none;
+    margin-top: 1.5rem;
+}
+
+ul li {
+    margin-bottom: 0.8rem;
+}
+
+ul a {
+    display: inline-block;
+    padding: 0.8rem 1.2rem;
+    background: #f8f9fa;
+    color: #2c3e50;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border-left: 3px solid #667eea;
+}
+
+ul a:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .error-code {
+        font-size: 4rem;
+    }
+    
+    .error-message {
+        font-size: 1.4rem;
+    }
+    
+    .menu, .error-container, .image-container, .author-info {
+        padding: 1.5rem;
+    }
+}
