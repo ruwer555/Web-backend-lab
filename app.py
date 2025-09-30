@@ -103,6 +103,7 @@ def forbidden(err):
 
 @app.errorhandler(404)
 def not_found(err):
+    path_erorr = url_for("static", filename="error.webp")
     return '''<!doctype html> 
     <html> 
         <head>
@@ -110,6 +111,7 @@ def not_found(err):
         </head>
         <body> 
             <h1>Ошибка 404 - Не найдено<h1> 
+            <img src="''' + path_erorr + '''">
             <ul>
                 <li><a href="/400">Ошибка 400</a></li>
                 <li><a href="/401">Ошибка 401</a></li>
@@ -395,7 +397,13 @@ def lab1():
     '''
 @app.route('/lab2/a')
 def a():
-    return "ok"
+    return "без слэша"
+
+@app.route('/lab2/a/')
+def a2():
+    return "со слэшем"
+
+
     
     
     
