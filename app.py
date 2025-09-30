@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect, abort, make_response
+from flask import Flask, url_for, request, redirect, abort, make_response, render_template
 from werkzeug.exceptions import HTTPException
 import datetime
 app = Flask(__name__)
@@ -426,44 +426,11 @@ def add_flowers(name):
         </body>
     </html>
     '''
+@app.route("/lab2/example")
+def example():
+    return render_template('example.html')
      
-     
-@app.route('/lab2')
-def lab2():
-    return '''
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>Лабораторная 1</title>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>Лабораторная работа 1</h1>
-                </div>
-                
-                <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                    <p>Flask — фреймворк для создания веб-приложений на языке
-                    программирования Python, использующий набор инструментов
-                    Werkzeug, а также шаблонизатор Jinja2. Относится к категории так
-                    называемых микрофреймворков — минималистичных каркасов
-                    веб-приложений, сознательно предоставляющих лишь самые базовые возможности.</p>
-                </div>
-                <hr>
-                <h2>Все роуты</h2>
-                <ul>
-                    <li><a href="/index">Курс</a></li>
-                    <li><a href="400">Ошибки</a></li>
-                    <li><a href="/lab1/author">Автор</a></li>
-                    <li><a href="/lab1/image">Картинка</a></li>
-                    <li><a href="/lab1/web">WEB</a></li>
-                    <li><a href="/lab1/counter">Счетчик</a></li>
-                </ul>
-            </div>
-        </body>
-    </html>
-    '''
+
     
     
     
