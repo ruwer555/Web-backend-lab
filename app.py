@@ -101,27 +101,51 @@ def forbidden(err):
         </body> 
     </html>''', 403
 
+access_logs = []
+
+# ДОБАВЬТЕ В НАЧАЛЕ ФАЙЛА
+access_logs = []
+
 @app.errorhandler(404)
 def not_found(err):
-    path_erorr = url_for("static", filename="error.webp")
-    return '''<!doctype html> 
+    global access_logs
+    client_ip = request.remote_addr
+    access_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    requested_url = request.url
+    user_agent = request.headers.get('User-Agent', 'Неизвестный')
+    log_entry = {
+        'ip': client_ip,
+        'time': access_time,
+        'url': requested_url,
+        'user_agent': user_agent
+    }
+    access_logs.append(log_entry)
+    path_error = url_for("static", filename="error.webp")
+    return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
         </head>
         <body> 
-            <h1>Ошибка 404 - Не найдено<h1> 
-            <img src="''' + path_erorr + '''">
+            <h1>Ошибка 404 - Не найдено</h1> 
+            <img src="{path_error}">
+            <div>
+                <h3>Информация о текущем запросе:</h3>
+                <p>IP-адрес: {client_ip}</p>
+                <p>Время доступа: {access_time}</p>
+                <p>Запрошенный URL:{requested_url}</p>
+                <p>Браузер: {user_agent[:80]}...</p>
+            </div>
             <ul>
+                <li><a href="/">На главную страницу</a></li>
+                <li><a href="/lab1">К лабораторной 1</a></li>
                 <li><a href="/400">Ошибка 400</a></li>
                 <li><a href="/401">Ошибка 401</a></li>
                 <li><a href="/402">Ошибка 402</a></li>
                 <li><a href="/403">Ошибка 403</a></li>
-                <li><a href="/404">Ошибка 404</a></li>
                 <li><a href="/405">Ошибка 405</a></li>
                 <li><a href="/418">Ошибка 418</a></li>
                 <li><a href="/500">Ошибка 500</a></li>
-                <li><a href="/lab1">На главную</a></li>
             </ul>
         </body> 
     </html>''', 404
@@ -406,7 +430,7 @@ def a2():
 flowers_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
 
 @app.route("/lab2/flowers/<int:flower_id>")
-def flowers(flower_id):
+def flowers_id(flower_id):
     if flower_id >= len(flowers_list):
         abort(404)
     else:
@@ -473,6 +497,16 @@ def example():
     ]
     return render_template('example.html', name=name, num_lab=num_lab, group=group, kurs=kurs, fruits=fruits)
      
+@app.route("/lab2/count/<int:first>/<int:second>")
+def flowers(first, second):
+    if first == "" or second == "":
+        abort(400)
+    else:
+        a = first
+        b = second
+        
+        return render_template('calc.html')
+
 @app.route("/lab2/")
 def lab2():
     return render_template('lab2.html')
@@ -480,4 +514,6 @@ def lab2():
 @app.route("/lab2/filters")
 def filters():
     phrase = '0 <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
-    return render_template('filters.html', phrase = phrase)    
+    return render_template('filters.html', phrase = phrase) 
+
+   
