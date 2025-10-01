@@ -137,9 +137,8 @@ def not_found(err):
                 <p>Время доступа: {access_time}</p>
                 <p>Запрошенный URL:{requested_url}</p>
                 <p>Браузер: {user_agent[:80]}...</p>
-                <h3>📋 Журнал доступа (последние {len(access_logs)} записей):</h3>
-                <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; max-height: 300px; overflow-y: auto;">
-                    {"".join([f"<p style='margin: 5px 0; padding: 5px; border-bottom: 1px solid #eee;'>{log['time']} - <strong>{log['ip']}</strong> - {log['url']}</p>" for log in reversed(access_logs)])}
+                <h3>Журнал доступа (последние {len(access_logs)} записей):</h3>
+                    {"".join([f"<p><b>Время</b> - {log['time']} <b>IP пользовтеля</b> - {log['ip']} <b>Путь</b> - {log['url']}</p>" for log in reversed(access_logs)])}
             </div>
             
             <ul>
@@ -444,6 +443,9 @@ def flowers_id(flower_id):
         return f'''
         <!DOCTYPE html>
         <html>
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+            </head>
             <body>
                 <h1>Цветок по номеру</h1>
                 <p>Цветок: + {flowers_list[flower_id]}</p>
@@ -453,17 +455,21 @@ def flowers_id(flower_id):
         '''
 @app.route("/flowers_full")
 def flowers_full():
-        return f'''
-        <!DOCTYPE html>
-        <html>
-            <body>
-                <h1>Все цветы</h1>
-                <p>Всего цветов: {len(flowers_list)}</p>
-                <p>Полный список: {flowers_list}</p>
-                <a href="/flowers_clear">очищение списка цветов</a>
-            </body>
-        </html>
-        '''    
+    global flowers_list
+    return f'''
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
+        </head>
+        <body>
+            <h1>Все цветы</h1>
+            <p>Всего цветов: {len(flowers_list)}</p>
+            <p>Полный список: {flowers_list}</p>
+            <button href="/flowers_clear">очищение списка цветов</button>
+        </body>
+    </html>
+    '''    
 @app.route("/flowers_clear")
 def flowers_clear():
         global flowers_list
@@ -472,7 +478,39 @@ def flowers_clear():
           
 @app.route("/lab2/add_flower/")
 def flower_empty():
-    return "Вы не задали имя цветка", 400        
+    return f'''
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+            </head>
+            <body>
+                <h1>Вы не задали имя цветка</h1>
+            </body>
+        </html>
+        ''', 400  
+        
+@app.route("/lab2/calc/")
+def calc_empty():
+    return redirect("/lab2/calc/1/1")
+
+@app.route("/lab2/calc/<int:first>")
+def calc_second_empty(first):
+    return redirect(f"/lab2/calc/{first}/1")
+
+@app.route("/lab2/flowers/")
+def flower_id_empty():
+    return f'''
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+            </head>
+            <body>
+                <h1>Вы не задали номер цветка</h1>
+            </body>
+        </html>
+        ''', 400          
     
 @app.route("/lab2/add_flower/<name>")
 def add_flowers(name):
@@ -480,6 +518,9 @@ def add_flowers(name):
         return f'''
         <!DOCTYPE html>
         <html>
+            <head>
+                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+            </head>
             <body>
                 <h1>Добавлен новый цветок</h1>
                 <p>Название нового цветка: {name} </p>
@@ -503,15 +544,28 @@ def example():
     ]
     return render_template('example.html', name=name, num_lab=num_lab, group=group, kurs=kurs, fruits=fruits)
      
-@app.route("/lab2/count/<int:first>/<int:second>")
+@app.route("/lab2/calc/<int:first>/<int:second>")
 def flowers(first, second):
-    if first == "" or second == "":
-        abort(400)
-    else:
-        a = first
-        b = second
-        
-        return render_template('calc.html')
+    a = first
+    b = second
+    return f'''
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
+            </head>
+            <body>
+                <h1>Калькулятор</h1>
+                <ul>
+                    <li>{a} + {b} = {a + b}<br></li>
+                    <li>{a} * {b} = {a * b}<br></li>
+                    <li>{a} - {b} = {a - b}<br></li>
+                    <li>{a} / {b} = {a / b}<br></li>
+                    <li>{a}<sup>{b}</sup> = {a ** b}<br></li>
+                </ul>
+            </body>
+        </html>
+        '''
 
 @app.route("/lab2/")
 def lab2():
