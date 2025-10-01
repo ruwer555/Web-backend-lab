@@ -410,22 +410,54 @@ def flowers(flower_id):
     if flower_id >= len(flowers_list):
         abort(404)
     else:
-        return "Цветок:" + flowers_list[flower_id]
+        "Цветок:" + flowers_list[flower_id]
+        return f'''
+        <!DOCTYPE html>
+        <html>
+            <body>
+                <h1>Цветок по номеру</h1>
+                <p>Цветок: + {flowers_list[flower_id]}</p>
+                <a href="/flowers_full">все цветы</a>
+            </body>
+        </html>
+        '''
+@app.route("/flowers_full")
+def flowers_full():
+        return f'''
+        <!DOCTYPE html>
+        <html>
+            <body>
+                <h1>Все цветы</h1>
+                <p>Всего цветов: {len(flowers_list)}</p>
+                <p>Полный список: {flowers_list}</p>
+                <a href="/flowers_clear">очищение списка цветов</a>
+            </body>
+        </html>
+        '''    
+@app.route("/flowers_clear")
+def flowers_clear():
+        global flowers_list
+        flowers_list = []
+        return redirect("/flowers_full")
+          
+@app.route("/lab2/add_flower/")
+def flower_empty():
+    return "Вы не задали имя цветка", 400        
     
 @app.route("/lab2/add_flower/<name>")
 def add_flowers(name):
-    flowers_list.append(name)
-    return f'''
-    <!DOCTYPE html>
-    <html>
-        <body>
-            <h1>Добавлен новый цветок</h1>
-            <p>Название нового цветка: {name} </p>
-            <p>Всего цветов: {len(flowers_list)}</p>
-            <p>Полный список: {flowers_list}</p>
-        </body>
-    </html>
-    '''
+        flowers_list.append(name)
+        return f'''
+        <!DOCTYPE html>
+        <html>
+            <body>
+                <h1>Добавлен новый цветок</h1>
+                <p>Название нового цветка: {name} </p>
+                <p>Всего цветов: {len(flowers_list)}</p>
+                <p>Полный список: {flowers_list}</p>
+            </body>
+        </html>
+        '''
 @app.route("/lab2/example")
 def example():
     name = 'Копылов Владимир'
@@ -449,4 +481,3 @@ def lab2():
 def filters():
     phrase = '0 <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
     return render_template('filters.html', phrase = phrase)    
-    
