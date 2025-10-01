@@ -121,6 +121,8 @@ def not_found(err):
     }
     access_logs.append(log_entry)
     path_error = url_for("static", filename="error.webp")
+    if len(access_logs) > 5:
+        access_logs.pop(0)
     return f'''<!doctype html> 
     <html> 
         <head>
@@ -135,7 +137,11 @@ def not_found(err):
                 <p>Время доступа: {access_time}</p>
                 <p>Запрошенный URL:{requested_url}</p>
                 <p>Браузер: {user_agent[:80]}...</p>
+                <h3>📋 Журнал доступа (последние {len(access_logs)} записей):</h3>
+                <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd; max-height: 300px; overflow-y: auto;">
+                    {"".join([f"<p style='margin: 5px 0; padding: 5px; border-bottom: 1px solid #eee;'>{log['time']} - <strong>{log['ip']}</strong> - {log['url']}</p>" for log in reversed(access_logs)])}
             </div>
+            
             <ul>
                 <li><a href="/">На главную страницу</a></li>
                 <li><a href="/lab1">К лабораторной 1</a></li>
