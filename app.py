@@ -359,7 +359,7 @@ def index():
         </body>
     </html>
     '''
-@app.route('/lab1')
+@app.route('/lab1/')
 def lab1():
     return '''
     <!DOCTYPE html>
@@ -441,8 +441,9 @@ def example():
     ]
     return render_template('example.html', name=name, num_lab=num_lab, group=group, kurs=kurs, fruits=fruits)
      
-
-    
+@app.route("/lab2/")
+def lab2():
+    return render_template('lab2.html')
     
     
     
