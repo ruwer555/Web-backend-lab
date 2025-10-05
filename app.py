@@ -448,12 +448,14 @@ def flowers_id(flower_id):
             </head>
             <body>
                 <h1>Цветок по номеру</h1>
-                <p>Цветок: + {flowers_list[flower_id]}</p>
+                <p>Цветок: {flower_id}</p>
+                <p>Цветок: {flowers_list[flower_id]}</p>
                 <a href="/flowers_full">все цветы</a>
                 <a href="/lab2/">Главная</a>
             </body>
         </html>
         '''
+        
 @app.route("/flowers_full")
 def flowers_full():
     global flowers_list
@@ -489,6 +491,7 @@ def flower_empty():
             <body>
                 <h1>Вы не задали имя цветка</h1>
                 <a href="/lab2/">Главная</a>
+                <a href="/lab2/add_flower/ромашка">Добавить цветок "Ромашка"</a>
             </body>
         </html>
         ''', 400  
@@ -501,6 +504,10 @@ def calc_empty():
 def calc_second_empty(first):
     return redirect(f"/lab2/calc/{first}/1")
 
+@app.route("/lab2/add_flower/")
+def flower_base_add():
+    return redirect(f"/lab2/add_flower/ромашка")
+
 @app.route("/lab2/flowers/")
 def flower_id_empty():
     return f'''
@@ -512,9 +519,14 @@ def flower_id_empty():
             <body>
                 <h1>Вы не задали номер цветка</h1>
                 <a href="/lab2/">Главная</a>
+                <a href="/lab2/flower_base_add_id/">Посмотреть последний элемент списка, если он не пустой</a>
             </body>
         </html>
-        ''', 400          
+        ''', 400  
+        
+@app.route("/lab2/flower_base_add_id/")
+def flower_base_add_id():
+    return redirect(f"/lab2/flowers/{len(flowers_list)-1}")        
     
 @app.route("/lab2/add_flower/<name>")
 def add_flowers(name):
