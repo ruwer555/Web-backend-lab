@@ -333,10 +333,10 @@ def counter():
     time = datetime.datetime.today()
     url = request.url
     client_ip = request.remote_addr
-    return '''<!doctype html> 
+    return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
         </head>
         <body> 
             Сколько раз вы сюда заходили: ''' + str(count) + '''
@@ -358,12 +358,12 @@ def info():
 @app.route('/')
 @app.route('/index')
 def index():
-    return '''
+    return f'''
     <!DOCTYPE html>
     <html>
         <head>
             <title>НГТУ, ФБ, Лабораторные работы</title>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
         </head>
         <body>
             <div class="container">
@@ -390,12 +390,12 @@ def index():
     '''
 @app.route('/lab1/')
 def lab1():
-    return '''
+    return f'''
     <!DOCTYPE html>
     <html>
         <head>
             <title>Лабораторная 1</title>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
         </head>
         <body>
             <div class="container">
@@ -444,12 +444,13 @@ def flowers_id(flower_id):
         <!DOCTYPE html>
         <html>
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
             </head>
             <body>
                 <h1>Цветок по номеру</h1>
                 <p>Цветок: + {flowers_list[flower_id]}</p>
                 <a href="/flowers_full">все цветы</a>
+                <a href="/lab2/">Главная</a>
             </body>
         </html>
         '''
@@ -466,7 +467,8 @@ def flowers_full():
             <h1>Все цветы</h1>
             <p>Всего цветов: {len(flowers_list)}</p>
             <p>Полный список: {flowers_list}</p>
-            <button href="/flowers_clear">очищение списка цветов</button>
+            <a href="/flowers_clear">очищение списка цветов</a>
+            <a href="/lab2/">Главная</a>
         </body>
     </html>
     '''    
@@ -482,10 +484,11 @@ def flower_empty():
         <!DOCTYPE html>
         <html>
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
             </head>
             <body>
                 <h1>Вы не задали имя цветка</h1>
+                <a href="/lab2/">Главная</a>
             </body>
         </html>
         ''', 400  
@@ -504,10 +507,11 @@ def flower_id_empty():
         <!DOCTYPE html>
         <html>
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
             </head>
             <body>
                 <h1>Вы не задали номер цветка</h1>
+                <a href="/lab2/">Главная</a>
             </body>
         </html>
         ''', 400          
@@ -519,13 +523,14 @@ def add_flowers(name):
         <!DOCTYPE html>
         <html>
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='main.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
             </head>
             <body>
                 <h1>Добавлен новый цветок</h1>
                 <p>Название нового цветка: {name} </p>
                 <p>Всего цветов: {len(flowers_list)}</p>
                 <p>Полный список: {flowers_list}</p>
+                <a href="/lab2/">Главная</a>
             </body>
         </html>
         '''
@@ -562,6 +567,7 @@ def flowers(first, second):
                     <li>{a} - {b} = {a - b}<br></li>
                     <li>{a} / {b} = {a / b}<br></li>
                     <li>{a}<sup>{b}</sup> = {a ** b}<br></li>
+                    <a href="/lab2/">Главная</a>
                 </ul>
             </body>
         </html>
@@ -639,7 +645,133 @@ def book():
         'genre': 'Философская сказка',
         'pages': 1000
     }
+    
 ]
     return render_template('book.html', book = book) 
 
-   
+@app.route("/lab2/images/")
+def images():
+    images_20 = [
+        {
+            'id': 1,
+            'name': 'Калбаса',
+            'image': 'image/sticker1.webp',
+            'description': 'Я маленький бутербродик',
+        },
+        {
+            'id': 2,
+            'name': 'Пицца',
+            'image': 'image/sticker2.webp',
+            'description': 'Пицца с холопеньями',
+        },
+        {
+            'id': 3,
+            'name': 'Гриб',
+            'image': 'image/sticker3.webp',
+            'description': 'А я гриб',
+        },
+        {
+            'id': 4,
+            'name': 'Ананасини',
+            'image': 'image/sticker4.webp',
+            'description': 'Орунгутини ананасини',
+        },
+        {
+            'id': 5,
+            'name': 'Одна сосиска два теста',
+            'image': 'image/sticker5.webp',
+            'description': 'Упаф',
+        },
+        {
+            'id': 6,
+            'name': 'яблоко',
+            'image': 'image/sticker6.webp',
+            'description': 'Первый брат',
+        },
+        {
+            'id': 7,
+            'name': 'Зеленое яблоко',
+            'image': 'image/sticker7.webp',
+            'description': 'Второй брат',
+        },
+        {
+            'id': 8,
+            'name': 'Бананини',
+            'image': 'image/sticker8.webp',
+            'description': 'Обезьянини бананини',
+        },
+        {
+            'id': 9,
+            'name': 'Нагетс',
+            'image': 'image/sticker9.webp',
+            'description': 'Нагетс и ростикс',
+        },
+        {
+            'id': 10,
+            'name': 'Бургер',
+            'image': 'image/sticker10.webp',
+            'description': 'Бургер из бургер кинга',
+        },
+        {
+            'id': 11,
+            'name': 'Голубика',
+            'image': 'image/sticker11.webp',
+            'description': 'Голубика не клубника',
+        },
+        {
+            'id': 12,
+            'name': 'Клубника',
+            'image': 'image/sticker12.webp',
+            'description': 'Клубника не голубика',
+        },
+        {
+            'id': 13,
+            'name': 'Апельсинчик',
+            'image': 'image/sticker13.webp',
+            'description': 'Ровный пацанчик',
+        },
+        {
+            'id': 14,
+            'name': 'Краб лейз',
+            'image': 'image/sticker14.webp',
+            'description': 'Спасти 10 детей или...',
+        },
+        {
+            'id': 15,
+            'name': 'Пельмень',
+            'image': 'image/sticker15.webp',
+            'description': 'Что может быть лучше теста с мясом',
+        },
+        {
+            'id': 16,
+            'name': 'Варенник',
+            'image': 'image/sticker16.webp',
+            'description': 'Что может быть лучше теста с вишней',
+        },
+        {
+            'id': 17,
+            'name': 'Арбуз',
+            'image': 'image/sticker17.webp',
+            'description': 'Красный, сочный, дорогой бери, не пожалеешь',
+        },
+        {
+            'id': 18,
+            'name': 'кокос',
+            'image': 'image/sticker18.webp',
+            'description': 'Атдихаю',
+        },
+        {
+            'id': 19,
+            'name': 'Шиш с маслом',
+            'image': 'image/sticker19.webp',
+            'description': 'Сектор шиш с маслом',
+        },
+        {
+            'id': 20,
+            'name': 'Балтика',
+            'image': 'image/sticker20.webp',
+            'description': 'Нулевка',
+        }
+        
+    ]
+    return render_template('images.html', images_20 = images_20) 
