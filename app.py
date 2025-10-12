@@ -103,9 +103,6 @@ def forbidden(err):
 
 access_logs = []
 
-# ДОБАВЬТЕ В НАЧАЛЕ ФАЙЛА
-access_logs = []
-
 @app.errorhandler(404)
 def not_found(err):
     global access_logs
@@ -432,70 +429,80 @@ def a():
 def a2():
     return "со слэшем"
 
-flowers_list = ['роза', 'тюльпан', 'незабудка', 'ромашка']
+flowers_list = [
+    {'name': 'Роза', 'price': 150},
+    {'name': 'Тюльпан', 'price': 80},
+    {'name': 'Ромашка', 'price': 50},
+    {'name': 'Орхидея', 'price': 300},
+    {'name': 'Лилия', 'price': 120}
+]
 
 @app.route("/lab2/flowers/<int:flower_id>")
 def flowers_id(flower_id):
     if flower_id >= len(flowers_list):
         abort(404)
     else:
-        "Цветок:" + flowers_list[flower_id]
-        return f'''
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
-            </head>
-            <body>
-                <h1>Цветок по номеру</h1>
-                <p>Цветок: {flower_id}</p>
-                <p>Цветок: {flowers_list[flower_id]}</p>
-                <a href="/flowers_full">все цветы</a>
-                <a href="/lab2/">Главная</a>
-            </body>
-        </html>
-        '''
+        return render_template('flowers.html', page_type = 'flowers_id', flower_id=flower_id, flowers_list=flowers_list)
         
-@app.route("/flowers_full")
+@app.route("/flowers_full/")
 def flowers_full():
-    global flowers_list
-    return f'''
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
-        </head>
-        <body>
-            <h1>Все цветы</h1>
-            <p>Всего цветов: {len(flowers_list)}</p>
-            <p>Полный список: {flowers_list}</p>
-            <a href="/flowers_clear">очищение списка цветов</a>
-            <a href="/lab2/">Главная</a>
-        </body>
-    </html>
-    '''    
-@app.route("/flowers_clear")
+    return render_template('flowers.html', page_type = 'flowers_full', flowers_list=flowers_list)
+
+@app.route("/flowers_clear/")
 def flowers_clear():
         global flowers_list
         flowers_list = []
-        return redirect("/flowers_full")
+        return redirect("/flowers_full/")
           
 @app.route("/lab2/add_flower/")
 def flower_empty():
-    return f'''
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
-            </head>
-            <body>
-                <h1>Вы не задали имя цветка</h1>
-                <a href="/lab2/">Главная</a>
-                <a href="/lab2/add_flower/ромашка">Добавить цветок "Ромашка"</a>
-            </body>
-        </html>
-        ''', 400  
+    return render_template('flowers.html', page_type = 'flower_empty', flowers_list=flowers_list), 400  
+
+@app.route("/lab2/flowers/")
+def flower_id_empty():
+    return render_template('flowers.html', page_type = 'flower_base_add', flowers_list=flowers_list)
+   
+@app.route("/lab2/flower_base_add_id/")
+def flower_base_add_id():
+    if flowers_list:
+        last_flower = flowers_list[-1]
+        return redirect(f"/lab2/flowers/{len(flowers_list)-1}")        
+    else:
+        return redirect("/flowers_full/") 
+    
+@app.route("/lab2/add_flower/<name>")
+def add_flowers(name):
+        flowers_list.append(name)
+        return render_template('flowers.html', page_type = 'add_flowers', flowers_list=flowers_list, name=name)
         
+@app.route("/lab2/delete_flower/<int:flower_id>")
+def delete_flower(flower_id):
+    global flowers_list
+    if flower_id >= len(flowers_list):
+        abort(404)
+    flowers_list.pop(flower_id)
+    return redirect("/flowers_full/")
+
+@app.route("/lab2/delete_flower/")
+def delete_flower_empty():
+    return render_template('flowers.html', page_type = 'delete_flower_empty', flowers_list=flowers_list)
+
+
+@app.route("/lab2/add_flower_with_price", methods=['POST'])
+def add_flower_with_price():
+    global flowers_list
+    name = request.form.get('flower_name')
+    price = request.form.get('flower_price', 0)
+    
+    if name:
+        flowers_list.append({
+            'name': name,
+            'price': int(price) if price else 0
+        })
+    return redirect("/flowers_full")
+
+
+
 @app.route("/lab2/calc/")
 def calc_empty():
     return redirect("/lab2/calc/1/1")
@@ -504,49 +511,7 @@ def calc_empty():
 def calc_second_empty(first):
     return redirect(f"/lab2/calc/{first}/1")
 
-@app.route("/lab2/add_flower/")
-def flower_base_add():
-    return redirect(f"/lab2/add_flower/ромашка")
-
-@app.route("/lab2/flowers/")
-def flower_id_empty():
-    return f'''
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
-            </head>
-            <body>
-                <h1>Вы не задали номер цветка</h1>
-                <a href="/lab2/">Главная</a>
-                <a href="/lab2/flower_base_add_id/">Посмотреть последний элемент списка, если он не пустой</a>
-            </body>
-        </html>
-        ''', 400  
-        
-@app.route("/lab2/flower_base_add_id/")
-def flower_base_add_id():
-    return redirect(f"/lab2/flowers/{len(flowers_list)-1}")        
-    
-@app.route("/lab2/add_flower/<name>")
-def add_flowers(name):
-        flowers_list.append(name)
-        return f'''
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <link rel="stylesheet" href="{url_for('static', filename='main.css')}">
-            </head>
-            <body>
-                <h1>Добавлен новый цветок</h1>
-                <p>Название нового цветка: {name} </p>
-                <p>Всего цветов: {len(flowers_list)}</p>
-                <p>Полный список: {flowers_list}</p>
-                <a href="/lab2/">Главная</a>
-            </body>
-        </html>
-        '''
-@app.route("/lab2/example")
+@app.route("/lab2/example/")
 def example():
     name = 'Копылов Владимир'
     num_lab = '2'
@@ -591,7 +556,7 @@ def lab2():
     
 @app.route("/lab2/filters")
 def filters():
-    phrase = '0 <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
+    phrase = 'O <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
     return render_template('filters.html', phrase = phrase) 
 
 @app.route("/lab2/book/")

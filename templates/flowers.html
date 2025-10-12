@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{% block content %}
+    {% set current_page = page_type | default('main') %}
+    
+    {% if current_page == 'flowers_id' %}
+        {% if flowers_list[flower_id] is mapping %}
+                <h3>{{ flowers_list[flower_id].name }}</h3>
+                <p>Цена: {{ flowers_list[flower_id].price }} руб.</p>
+            {% else %}
+                <h3>{{ flowers_list[flower_id] }}</h3>
+                <p>Цена: не указана</p>
+            {% endif %}
+        <a href="/flowers_full">Все цветы</a>
+        <a href="/lab2/">Главная</a>
+
+    {% elif current_page == 'flowers_full' %}
+        <h1>Все цветы</h1>
+        <div>
+            <h3>Добавить новый цветок</h3>
+            <form action="/lab2/add_flower_with_price" method="post">
+                <input type="text" name="flower_name" placeholder="Название цветка" required>
+                <input type="number" name="flower_price" placeholder="Цена" min="0" value="0">
+                <button>Добавить</button>
+            </form>
+        </div>
+        <div>
+            <p>Быстрое добавление:</p>
+            <a href="/lab2/add_flower/Роза">Роза</a> | 
+            <a href="/lab2/add_flower/Тюльпан">Тюльпан</a> | 
+            <a href="/lab2/add_flower/Ромашка">Ромашка</a>
+        </div>
+
+        <p>Всего цветов: {{ flowers_list | length }}</p>
+        <p>Полный список: {{ flowers_list }}</p>
+        
+        {% if flowers_list %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in flowers_list %}
+                    <tr>
+                        <td>{{ loop.index0 }}</td>
+                        <td>
+                            {% if f is mapping %}
+                                {{ f.name }}
+                            {% else %}
+                                {{ f }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if f is mapping %}
+                                {{ f.price }} руб.
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/lab2/flowers/{{ loop.index0 }}">Посмотреть</a>
+                            <a href="/lab2/delete_flower/{{ loop.index0 }}" 
+                               onclick="return confirm('Удалить этот цветок?')">
+                               Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Список цветов пуст</p>
+        {% endif %}
+        <a href="/flowers_clear">Очищение списка цветов</a>
+        <a href="/lab2/">Главная</a>
+
+    {% elif current_page == 'flower_empty' %}
+        <h1>Вы не задали имя цветка</h1>
+        <a href="/lab2/add_flower/ромашка">Добавить цветок "Ромашка"</a> 
+        <a href="/lab2/">Главная</a>
+
+    {% elif current_page == 'flower_base_add' %}
+        <h1>Вы не задали номер цветка</h1>
+        <a href="/lab2/flower_base_add_id/">Посмотреть последний элемент списка, если он не пустой</a> 
+        <a href="/lab2/">Главная</a>
+
+    {% elif current_page == 'delete_flower_empty' %}
+    <h1>Вы не задали номер цветка который хотите удалить</h1>
+    <a href="/lab2/delete_flower/0">Удалить первый элемент списка</a> 
+    <a href="/lab2/">Главная</a>
+
+    {% elif current_page == 'add_flowers' %}
+        <h1>Добавлен новый цветок</h1>
+        <p>Название нового цветка: {{ name }}</p>
+        <p>Всего цветов: {{ flowers_list | length }}</p>
+        <p>Полный список: {{ flowers_list }}</p>
+        <a href="/flowers_full">Все цветы</a>
+        <a href="/lab2/">Главная</a>
+
+    {% else %}
+        <h1>Главная страница лабораторной</h1>
+        <p>Выберите действие:</p>
+        <ul>
+            <li><a href="/lab2/flower/0">Посмотреть цветок по номеру</a></li>
+            <li><a href="/lab2/flowers_full">Посмотреть все цветы</a></li>
+            <li><a href="/lab2/add_flower/роза">Добавить цветок "Роза"</a></li>
+        </ul>
+    {% endif %}
+{% endblock %}

@@ -100,24 +100,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* ===== КНОПКИ ===== */
-.home-link {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: #667eea;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.home-link:hover {
-    background: #5a6fd8;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
 /* ===== СТРАНИЦА С КАРТИНКОЙ ===== */
 .image-container {
     background: white;
@@ -248,3 +230,40 @@ a:hover {
     background: #667eea;
     color: white;
 }
+
+input, button {
+    padding: 12px;
+    margin: 5px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+input {
+    width: 250px;
+    background: white;
+}
+
+button {
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+    border: 2px solid #667eea;
+}
+
+input:hover, button:hover {
+    border-color: #667eea;
+}
+
+input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+button:active {
+    background: #667eea;
+    transform: scale(0.98);
+}
+
+
