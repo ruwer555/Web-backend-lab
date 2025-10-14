@@ -5,13 +5,13 @@ lab1 = Blueprint("lab1", __name__)
 
 @lab1.route('/lab1/web')
 def web():
-    return '''<!doctype html> 
+    return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
         </head>
         <body> 
-            <h1>web-сервер на flask<h1> 
+            <h1>web-сервер на flask</h1> 
             <div>
                 <a href="/lab1">На главную</a>
             </div>
@@ -28,15 +28,15 @@ def author():
     group = "ФБИ-31"
     faculty = "ФБ"
 
-    return '''<!doctype html> 
+    return f'''<!doctype html> 
         <html> 
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
             </head>
             <body> 
-                <p>Студент: ''' + name + '''<p>
-                <p>Группа: ''' + group + '''<p> 
-                <p>Факультет: ''' + faculty + '''<p> 
+                <p>Студент: {name}</p>
+                <p>Группа: {group}</p> 
+                <p>Факультет: {faculty}</p> 
                 <div>
                     <a href="/lab1">На главную</a>
                 </div>
@@ -47,14 +47,14 @@ def author():
 @lab1.route('/lab1/image')
 def image():
     path = url_for("static", filename="Dub.jpg")
-    html_image = '''<!doctype html> 
+    html_image = f'''<!doctype html> 
         <html> 
             <head>
-                <link rel="stylesheet" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
             </head>
             <body> 
-                <h1>Дуб<h1>
-                <img src="''' + path + '''">
+                <h1>Дуб</h1>
+                <img src="{path}">
                 <div>
                     <a href="/lab1">На главную</a>
                 </div>
@@ -104,41 +104,6 @@ def counter():
 @lab1.route('/lab1/info')
 def info():
     return redirect("/lab1/author")
-
-
-@lab1.route('/')
-@lab1.route('/index')
-def index():
-    return f'''
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>НГТУ, ФБ, Лабораторные работы</title>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
-        </head>
-        <body>
-            <div class="container">
-                <div class="header">
-                    <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
-                </div>
-                
-                <div class="menu">
-                    <ol>
-                        <li><a href="''' + url_for('lab1.lab') + '''">Первая лабораторная</a></li>
-                        <li><a href="''' + url_for('lab2.lab') + '''">Вторая лабораторная</a></li>
-                        <li><a href="''' + url_for('lab1.lab') + '''">Третья лабораторная</a></li>
-                        <li><a href="''' + url_for('lab1.lab') + '''">Четвертая лабораторная</a></li>
-                        <li><a href="''' + url_for('lab1.lab') + '''">Пятая лабораторная</a></li>
-                    </ol>
-                </div>
-                
-                <div class="footer">
-                    <p>Копылов Владимир Вячеславовович, группа ФБИ-31, 3 курс, 2025 год</p>
-                </div>
-            </div>
-        </body>
-    </html>
-    '''
     
     
 @lab1.route('/lab1/')
