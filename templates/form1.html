@@ -8,7 +8,7 @@
     {% if user %}
     <h1>Привет, {{ user }}</h1>
     <h1>Ваш возраст: {{ age }}</h1>
-    <h1>Ваш пол: {{ sex }}</h1>
+    <h1>Ваш пол: {{'мужской' if sex == 'male' else 'женский'}}</h1>
     <h2>Добро пожаловать на сайт!</h2>
     <div>
         <a href="/lab3/form1">Заново</a>
@@ -20,10 +20,13 @@
         <div>
             <input type="text" placeholder="как вас зовут?" name="user">
         </div>
+
         <label>Ваш возраст:</label>
         <div>
             <input type="number" placeholder="Ваш возраст?" name="age">
         </div>
+
+        <label>Ваш пол:</label>
         <div>
             <select name="sex" placeholder="">
                 <option value="male">мужчина</option>
