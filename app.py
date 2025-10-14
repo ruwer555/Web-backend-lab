@@ -3,10 +3,18 @@ from werkzeug.exceptions import HTTPException
 import datetime
 from lab1 import lab1
 from lab2 import lab2
+from lab3 import lab3
+from lab4 import lab4
+from lab5 import lab5
 
 app = Flask(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
+app.register_blueprint(lab3)
+app.register_blueprint(lab4)
+app.register_blueprint(lab5)
+
+
 @app.errorhandler(400)
 def bad_request(err):
     return f'''<!doctype html> 
@@ -280,7 +288,7 @@ def index():
                     <ol>
                         <li><a href="{ url_for('lab1.lab') }">Первая лабораторная</a></li>
                         <li><a href="{ url_for('lab2.lab') }">Вторая лабораторная</a></li>
-                        <li><a href="{ url_for('lab1.lab') }">Третья лабораторная</a></li>
+                        <li><a href="{ url_for('lab3.lab') }">Третья лабораторная</a></li>
                         <li><a href="{ url_for('lab1.lab') }">Четвертая лабораторная</a></li>
                         <li><a href="{ url_for('lab1.lab') }">Пятая лабораторная</a></li>
                     </ol>
