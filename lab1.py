@@ -8,7 +8,7 @@ def web():
     return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body> 
             <h1>web-сервер на flask</h1> 
@@ -31,7 +31,7 @@ def author():
     return f'''<!doctype html> 
         <html> 
             <head>
-                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+                <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
             </head>
             <body> 
                 <p>Студент: {name}</p>
@@ -46,11 +46,11 @@ def author():
 
 @lab1.route('/lab1/image')
 def image():
-    path = url_for("static", filename="Dub.jpg")
+    path = url_for("static", filename="lab1/Dub.jpg")
     html_image = f'''<!doctype html> 
         <html> 
             <head>
-                <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+                <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
             </head>
             <body> 
                 <h1>Дуб</h1>
@@ -85,7 +85,7 @@ def counter():
     return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body> 
             Сколько раз вы сюда заходили: ''' + str(count) + '''
@@ -113,7 +113,7 @@ def lab():
     <html>
         <head>
             <title>Лабораторная 1</title>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body>
             <div class="container">

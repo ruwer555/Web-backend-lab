@@ -129,13 +129,13 @@ def not_found(err):
         'user_agent': user_agent
     }
     access_logs.append(log_entry)
-    path_error = url_for("static", filename="error.webp")
+    path_error = url_for("static", filename="lab1/error.webp")
     if len(access_logs) > 5:
         access_logs.pop(0)
     return f'''<!doctype html> 
     <html> 
         <head>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body> 
             <h1>Ошибка 404 - Не найдено</h1> 
@@ -276,7 +276,7 @@ def index():
     <html>
         <head>
             <title>НГТУ, ФБ, Лабораторные работы</title>
-            <link rel="stylesheet" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body>
             <div class="container">
