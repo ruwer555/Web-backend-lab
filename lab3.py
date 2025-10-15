@@ -24,6 +24,10 @@ def del_cookie():
     resp.delete_cookie('name')
     resp.delete_cookie('age')
     resp.delete_cookie('name_color')
+    resp.delete_cookie('color')
+    resp.delete_cookie('background')
+    resp.delete_cookie('font_size')
+    resp.delete_cookie('font_family')
     return resp
 
 
@@ -59,9 +63,7 @@ def pay():
     if request.args.get('sugar') == 'on':
         price += 10
     
-    # Создаем response с шаблоном
     resp = make_response(render_template('lab3/pay.html', price=price))
-    # Устанавливаем куки
     resp.set_cookie('price', str(price))
     return resp
 
@@ -77,9 +79,8 @@ def settings():
     color = request.args.get('color')
     background = request.args.get('background')
     font_size = request.args.get('font_size')
-    font_family = request.args.get('font_family')  # исправлено: было font_size
+    font_family = request.args.get('font_family') 
     
-    # Получаем текущие значения из куки
     current_color = request.cookies.get('color')
     current_background = request.cookies.get('background')
     current_font_size = request.cookies.get('font_size')
@@ -96,12 +97,98 @@ def settings():
         if font_family:
             resp.set_cookie('font_family', font_family)
         return resp
+
+    return render_template('lab3/settings.html', color=current_color,
+                                                background=current_background, 
+                                                font_size=current_font_size, 
+                                                font_family=current_font_family)
+
+
+@lab3.route('/lab3/ticket')
+def form_ticket():
+    errors = {}
+    base_price = 0
+    ticket_type = ''
+    fio = request.args.get('fio')
+    shelf = request.args.get('shelf')
+    linen = request.args.get('linen')
+    baggage = request.args.get('baggage')
+    age = request.args.get('age')
+    departure = request.args.get('departure')
+    destination = request.args.get('destination')
+    date = request.args.get('date')
+    insurance = request.args.get('insurance')
+    if fio == '':
+        errors['fio'] = 'Заполните ФИО'
+    if shelf == '':
+        errors['shelf'] = 'Выберите полку'
+    if linen == '':
+        errors['linen'] = 'Укажите наличие белья'
+    if baggage == '':
+        errors['baggage'] = 'Укажите наличие багажа'
+    if age == '':
+        errors['age'] = 'Заполните возраст'
+    if age is not None:  
+        if age.strip() == '':  
+            errors['age'] = "Заполните возраст"
+        elif int(age) < 1 or int(age) > 120:
+            errors['age'] = "Возраст должен быть от 1 до 120 лет"
+    if departure == '':
+        errors['departure'] = 'Заполните пункт выезда'
+    if destination == '':
+        errors['destination'] = 'Заполните пункт назначения'
+    if date == '':
+        errors['date'] = 'Выберите дату поездки'
+    if insurance == '':
+        errors['insurance'] = 'Укажите наличие страховки'
+    if not errors and age is not None and age.strip() != '':
+        base_price = 700 if int(age) < 18 else 1000
+        ticket_type = "Детский билет" if base_price == 700 else "Взрослый билет"
+    else:
+        return render_template('lab3/form_ticket.html', errors=errors,
+                         fio=fio,
+                         shelf=shelf,
+                         linen=linen,
+                         baggage=baggage,
+                         departure=departure,
+                         destination=destination,
+                         date=date,
+                         base_price=base_price,
+                         ticket_type=ticket_type,
+                         insurance=insurance)
+
+    additional_services = []
     
-    # Рендерим шаблон с текущими значениями
-    return render_template('lab3/settings.html', color=current_color, background=current_background, font_size=current_font_size, font_family=current_font_family)
-
-
-
+    if shelf in ['lower', 'lower_side']:
+        base_price += 100
+        additional_services.append("+100 руб. (выбранная полка)")
+    
+    if linen == 'yes':
+        base_price += 75
+        additional_services.append("+75 руб. (бельё)")
+    
+    if baggage == 'yes':
+        base_price += 250
+        additional_services.append("+250 руб. (багаж)")
+    
+    if insurance == 'yes':
+        base_price += 150
+        additional_services.append("+150 руб. (страховка)")
+    
+    return render_template('lab3/form_ticket.html',
+                         errors=errors,
+                         fio=fio,
+                         shelf=shelf,
+                         linen=linen,
+                         baggage=baggage,
+                         age=age,
+                         departure=departure,
+                         destination=destination,
+                         date=date,
+                         base_price=base_price,
+                         ticket_type=ticket_type,
+                         insurance=insurance,
+                         additional_services=additional_services)
 
     
     

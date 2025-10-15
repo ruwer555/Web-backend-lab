@@ -8,13 +8,16 @@
         <div>
             <label for="color">Выберите цвет текста:</label>
             <input type="color" id="color" name="color" value="{{ color or '' }}">
-
+        </div>
+        <div>
             <label for="background">Выберите цвет фона:</label>
             <input type="color" id="background" name="background" value="{{ background or '' }}">
-
+        </div>
+        <div>
             <label for="font_size">Выберите размер шрифта:</label>
             <input type="text" id="font_size" name="font_size" value="{{ font_size or '16' }}">
-            
+        </div>
+        <div>
             <label for="font_family">Выберите тип шрифта:</label>
             <select id="font_family" name="font_family">
                 <option value="Arial" {% if font_family == 'Arial' %}selected{% endif %}>Arial</option>

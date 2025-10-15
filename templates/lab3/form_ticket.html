@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    {% if fio and linen and baggage and age and departure and destination and insurance and date%}
+    <h1>Билет оформлен успешно. Приятной поездки!</h1>
+    <h2>Ваш железнодорожный билет</h2>
+    <div>
+        <div>
+            <strong>Пассажир:</strong> {{ fio }}<br>
+            <strong>Возраст:</strong> {{ age }} лет<br>
+            <strong>Тип билета:</strong> {{ ticket_type }}
+        </div>
+        <div>
+            <strong>Маршрут:</strong><br>
+            {{ departure }} -> {{ destination }}<br>
+            <strong>Дата:</strong> {{ date }}
+        </div>
+        <div>
+            <strong>Услуги:</strong><br>
+            Полка: 
+            {% if shelf == 'lower' %}Нижняя
+            {% elif shelf == 'upper' %}Верхняя
+            {% elif shelf == 'upper-side' %}Верхняя боковая
+            {% elif shelf == 'lower-side' %}Нижняя боковая
+            {% endif %}<br>
+            • Бельё: {{ 'Да' if linen == 'yes' else 'Нет' }}<br>
+            • Багаж: {{ 'Да' if baggage == 'yes' else 'Нет' }}<br>
+            • Страховка: {{ 'Да' if insurance == 'yes' else 'Нет' }}
+        </div>
+        <div>
+            <strong>Стоимость:</strong><br>
+            {% for service in additional_services %}
+                {{ service }}<br>
+            {% endfor %}
+            <strong>Итого: {{ base_price }} руб.</strong>
+        </div>
+    </div>
+    <div>
+        <a href="/lab3/ticket">Оформить новый билет</a>
+    </div>
+    {% else %}
+    <h1>Железнодорожный билет</h1>
+    <form>
+        <label for="fio">ФИО пассажира:</label>
+        <div>
+            <input type="text" placeholder="как вас зовут?" name="fio" value="{{ fio or ''}}">
+            <span class='error'>{{ errors.fio }}</span>
+        </div>
+        <div>
+            <label>Полка:</label>
+            <label><input type="radio" name="shelf" value="lower" {% if shelf == 'lower' %}checked{% endif %}> Нижняя</label>
+            <label><input type="radio" name="shelf" value="upper" {% if shelf == 'upper' %}checked{% endif %}> Верхняя</label>
+            <label><input type="radio" name="shelf" value="upper-side" {% if shelf == 'upper-side' %}checked{% endif %}> Верхняя боковая</label>
+            <label><input type="radio" name="shelf" value="lower-side" {% if shelf == 'lower-side' %}checked{% endif %}> Нижняя боковая</label>
+        </div>
+
+        <div>
+            <label>С бельём:</label>
+            <label><input type="radio" name="linen" value="yes" {% if linen == 'yes' %}checked{% endif %}> Да</label>
+            <label><input type="radio" name="linen" value="no" {% if linen == 'no' %}checked{% endif %}> Нет</label>
+            <span class='error'>{{ errors.linen }}</span>
+
+        </div>
+
+        <div>
+            <label>С багажом:</label>
+            <label><input type="radio" name="baggage" value="yes" {% if baggage == 'yes' %}checked{% endif %}> Да</label>
+            <label><input type="radio" name="baggage" value="no" {% if baggage == 'no' %}checked{% endif %}> Нет</label>
+            <span >{{ errors.baggage }}</span>
+
+        </div>
+
+        <div>
+            <label for="age">Возраст:</label>
+            <input type="number" name="age" value="{{ age or ''}}">
+            <span class='error'>{{ errors.age }}</span>
+        </div>
+
+        <div>
+            <label for="departure">Пункт выезда:</label>
+            <input type="text" name="departure" value="{{ departure or ''}}">
+            <span class='error'>{{ errors.departure }}</span>
+        </div>
+
+        <div>
+            <label for="destination">Пункт назначения:</label>
+            <input type="text" id="destination" name="destination" value="{{ destination or ''}}">
+            <span class='error'>{{ errors.destination }}</span>
+        </div>
+
+        <div>
+            <label for="date">Дата поездки:</label>
+            <input type="date" name="date" value="{{ date or ''}}">
+            <span class='error'>{{ errors.date }}</span>
+        </div>
+
+        <div>
+            <label>Страховка:</label>
+            <label><input type="radio" name="insurance" value="yes" {% if insurance == 'yes' %}checked{% endif %}> Да</label>
+            <label><input type="radio" name="insurance" value="no" {% if insurance == 'no' %}checked{% endif %}> Нет</label>
+            <span class='error'>{{ errors.insurance }}</span>
+        </div>
+
+        <div>
+            <button type="submit">Оформить билет</button>
+        </div>
+    </form>
+    {% endif %}
+{% endblock %}
