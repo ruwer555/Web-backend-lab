@@ -23,11 +23,11 @@ def flowers_id(flower_id):
     if flower_id >= len(flowers_list):
         abort(404)
     else:
-        return render_template('flowers.html', page_type = 'flowers_id', flower_id=flower_id, flowers_list=flowers_list)
+        return render_template('/lab2/flowers.html', page_type = 'flowers_id', flower_id=flower_id, flowers_list=flowers_list)
         
 @lab2.route("/flowers_full/")
 def flowers_full():
-    return render_template('flowers.html', page_type = 'flowers_full', flowers_list=flowers_list)
+    return render_template('/lab2/flowers.html', page_type = 'flowers_full', flowers_list=flowers_list)
 
 @lab2.route("/flowers_clear/")
 def flowers_clear():
@@ -37,11 +37,11 @@ def flowers_clear():
           
 @lab2.route("/lab2/add_flower/")
 def flower_empty():
-    return render_template('flowers.html', page_type = 'flower_empty', flowers_list=flowers_list), 400  
+    return render_template('/lab2/flowers.html', page_type = 'flower_empty', flowers_list=flowers_list), 400  
 
 @lab2.route("/lab2/flowers/")
 def flower_id_empty():
-    return render_template('flowers.html', page_type = 'flower_base_add', flowers_list=flowers_list)
+    return render_template('/lab2/flowers.html', page_type = 'flower_base_add', flowers_list=flowers_list)
    
 @lab2.route("/lab2/flower_base_add_id/")
 def flower_base_add_id():
@@ -54,7 +54,7 @@ def flower_base_add_id():
 @lab2.route("/lab2/add_flower/<name>")
 def add_flowers(name):
         flowers_list.append(name)
-        return render_template('flowers.html', page_type = 'add_flowers', flowers_list=flowers_list, name=name)
+        return render_template('/lab2/flowers.html', page_type = 'add_flowers', flowers_list=flowers_list, name=name)
         
 @lab2.route("/lab2/delete_flower/<int:flower_id>")
 def delete_flower(flower_id):
@@ -66,7 +66,7 @@ def delete_flower(flower_id):
 
 @lab2.route("/lab2/delete_flower/")
 def delete_flower_empty():
-    return render_template('flowers.html', page_type = 'delete_flower_empty', flowers_list=flowers_list)
+    return render_template('/lab2/flowers.html', page_type = 'delete_flower_empty', flowers_list=flowers_list)
 
 
 @lab2.route("/lab2/add_flower_with_price", methods=['POST'])
@@ -105,7 +105,7 @@ def example():
         {'name': 'мандарины', 'price': 400},
         {'name': 'манго', 'price': 500}
     ]
-    return render_template('example.html', name=name, num_lab=num_lab, group=group, kurs=kurs, fruits=fruits)
+    return render_template('/lab2/example.html', name=name, num_lab=num_lab, group=group, kurs=kurs, fruits=fruits)
      
 @lab2.route("/lab2/calc/<int:first>/<int:second>")
 def flowers(first, second):
@@ -133,12 +133,12 @@ def flowers(first, second):
 
 @lab2.route("/lab2/")
 def lab():
-    return render_template('lab2.html')
+    return render_template('/lab2/lab2.html')
     
 @lab2.route("/lab2/filters")
 def filters():
     phrase = 'O <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
-    return render_template('filters.html', phrase = phrase) 
+    return render_template('/lab2/filters.html', phrase = phrase) 
 
 @lab2.route("/lab2/book/")
 def book():
@@ -205,7 +205,7 @@ def book():
     }
     
 ]
-    return render_template('book.html', book = book) 
+    return render_template('/lab2/book.html', book = book) 
 
 @lab2.route("/lab2/images/")
 def images():
@@ -332,4 +332,4 @@ def images():
         }
         
     ]
-    return render_template('images.html', images_20 = images_20) 
+    return render_template('/lab2/images.html', images_20 = images_20) 

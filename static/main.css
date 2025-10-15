@@ -282,3 +282,20 @@ select {
     color: red;
     font-size: 20px;
 }
+
+label {
+    display: inline-block;
+    margin: 0 5px 10px 0;
+    padding: 10px 5px;
+    width: 300px;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+label:hover {
+    background: #e9ecef;
+    border-color: #6c757d;
+}
