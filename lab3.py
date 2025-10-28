@@ -190,7 +190,7 @@ def form_ticket():
                          insurance=insurance,
                          additional_services=additional_services)
 
-    
+
     
     
     
