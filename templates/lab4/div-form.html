@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block lab %}Деление чисел{% endblock %}
+
+{% block content %}
+    {% if error %}
+        <div class='error'>{{ error }}</div>
+        <a href="/lab4/div-form">Вычисления</a>
+    {% else %}
+        <form method="post" action="/lab4/div">
+            <input type="number" name="x1" value="{{ x1 or '' }}"> / 
+            <input type="number" name="x2" value="{{ x2 or '' }}">
+            <input type="submit" value="=">
+        </form>
+    {% endif %}
+    
+    {% if page_type == 'lab4_div' %}
+        {% if errors and errors.x2 %}
+            <span class='error'>{{ errors.x2 }}</span>
+        {% else %} 
+            <p>Результат: {{ x1 }} / {{ x2 }} = {{ result }}</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
