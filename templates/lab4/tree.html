@@ -12,7 +12,6 @@
             Посадить дерево
         </button>
         
-        {# Кнопка "Срубить" блокируется при нуле деревьев #}
         <button name="operation" value="cut" 
                 {% if tree_count == 0 %}disabled{% endif %}>
             Срубить дерево
