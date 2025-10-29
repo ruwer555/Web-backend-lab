@@ -6,6 +6,9 @@ from lab2 import lab2
 from lab3 import lab3
 from lab4 import lab4
 from lab5 import lab5
+from lab6 import lab6
+from lab7 import lab7
+from lab8 import lab8
 
 app = Flask(__name__)
 app.secret_key = 'секретно-секретный секрет'
@@ -14,6 +17,9 @@ app.register_blueprint(lab2)
 app.register_blueprint(lab3)
 app.register_blueprint(lab4)
 app.register_blueprint(lab5)
+app.register_blueprint(lab6)
+app.register_blueprint(lab7)
+app.register_blueprint(lab8)
 
 
 @app.errorhandler(400)
@@ -291,7 +297,10 @@ def index():
                         <li><a href="{ url_for('lab2.lab') }">Вторая лабораторная</a></li>
                         <li><a href="{ url_for('lab3.lab') }">Третья лабораторная</a></li>
                         <li><a href="{ url_for('lab4.lab') }">Четвертая лабораторная</a></li>
-                        <li><a href="{ url_for('lab1.lab') }">Пятая лабораторная</a></li>
+                        <li><a href="{ url_for('lab5.lab') }">Пятая лабораторная</a></li>
+                        <li><a href="{ url_for('lab1.lab') }">Шестая лабораторная</a></li>
+                        <li><a href="{ url_for('lab1.lab') }">Седьмая лабораторная</a></li>
+                        <li><a href="{ url_for('lab1.lab') }">Восьмая лабораторная</a></li>
                     </ol>
                 </div>
                 
