@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block lab %}Регистрация{% endblock %}
+
+{% block main %}
+    <h1>Регистрация</h1>
+    
+    <form method="post">
+        <div>
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" value="{{ login or '' }}" required>
+        </div>
+        
+        <div>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <div>
+            <label for="confirm_password">Подтверждение пароля:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+        
+        <div>
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" value="{{ name or '' }}" required>
+        </div>
+        
+        <div>
+            <label for="gender">Пол:</label>
+            <select id="gender" name="gender">
+                <option value="male" {% if gender == 'male' %}selected{% endif %}>Мужской</option>
+                <option value="female" {% if gender == 'female' %}selected{% endif %}>Женский</option>
+            </select>
+        </div>
+        
+        {% if errors %}
+            <div class="error-container">
+                {% for error in errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if success %}
+            <div class="success-message">{{ success }}</div>
+        {% endif %}
+        
+        <div>
+            <button type="submit">Зарегистрироваться</button>
+            <button type="reset">Сбросить</button>
+        </div>
+    </form>
+    
+    <p>Уже есть аккаунт? <a href="/lab4/login">Войдите</a></p>
+{% endblock %}
