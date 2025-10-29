@@ -203,7 +203,57 @@ def fridge():
             message = f'Установлена температура: {temp}°C'
         return render_template('lab4/fridge.html', message=message, snowflakes=snowflakes, temperature=temp)
     
+@lab4.route('/lab4/grain')
+def grain_form():
+    return render_template('lab4/grain.html')
+
+@lab4.route('/lab4/grain', methods=['POST'])
+def grain():
+    grain_type = request.form.get('grain_type')
+    weight = request.form.get('weight')
     
+    prices = {
+        'barley': 12000,   
+        'oats': 8500,      
+        'wheat': 9000,     
+        'rye': 15000       
+    }
+    
+    grain_names = {
+        'barley': 'ячмень',
+        'oats': 'овёс', 
+        'wheat': 'пшеница',
+        'rye': 'рожь'
+    }
+    
+    if grain_type == '':
+        return render_template('lab4/grain.html', error='Выберите тип зерна')
+    
+    if weight == '':
+        return render_template('lab4/grain.html', error='Укажите вес заказа')
+    
+    else:
+        weight_val = float(weight)
+    
+        if weight_val <= 0:
+            return render_template('lab4/grain.html', error='Вес должен быть больше 0')
+        
+        if weight_val > 100:
+            return render_template('lab4/grain.html', error='Такого объёма сейчас нет в наличии')
+        
+        price_per_ton = prices[grain_type]
+        total = weight_val * price_per_ton
+        
+        discount = 0
+        if weight_val > 10:
+            discount = total * 0.10  
+            total -= discount
+        
+        grain_name = grain_names[grain_type]
+        
+        return render_template('lab4/grain.html', success=True, grain_name=grain_name, 
+                            weight=weight_val, total=total, discount=discount, selected_grain=grain_type)
+
     
     
     
