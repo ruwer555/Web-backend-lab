@@ -36,7 +36,7 @@ def register():
         return render_template('/lab5/register.html', error='Заполните все поля')
     
     conn, cur = db_connect()
-    cur.execute(f"SELECT login FROM users WHERE login='{login}';")
+    cur.execute("SELECT login FROM users WHERE login=%s",(login, ))
     
     if cur.fetchone():
         conn, cur = db_connect()
@@ -44,7 +44,7 @@ def register():
     
     password_hash = generate_password_hash(password)
     
-    cur.execute(f"INSERT INTO users (login, password) VALUES ('{login}', '{password_hash}');")
+    cur.execute("INSERT INTO users (login, password) VALUES (%s, %s);", (login, password_hash))
     db_close(conn, cur)
     return render_template('/lab5/success.html', login=login)
     
@@ -59,7 +59,7 @@ def login():
     
     conn, cur = db_connect()
     cur = conn.cursor(cursor_factory = RealDictCursor)
-    cur.execute(f"SELECT login, password FROM users WHERE login='{login}';")
+    cur.execute("SELECT login, password FROM users WHERE login=%s",(login, ))
     user = cur.fetchone()
     
     if not user:
@@ -89,7 +89,7 @@ def create():
     conn, cur = db_connect()
     cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
     user_id = cur.fetchone()["id"]
-    cur.execute(f"INSERT INTO articles(user_id, title, article_text) VALUES ({user_id}, '{title}', '{article_text}');")
+    cur.execute("INSERT INTO articles(user_id, title, article_text) VALUES (%s, %s, %s);",(user_id, title, article_text))
     db_close(conn, cur)
     return redirect('/lab5')
 
@@ -99,9 +99,9 @@ def list():
     if not login:
         return redirect('/lab5/login')
     conn, cur = db_connect()
-    cur.execute(f"SELECT id FROM users WHERE login='{login}';")
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login, ))
     user_id = cur.fetchone()["id"]
-    cur.execute(f"SELECT * FROM articles WHERE user_id='{user_id}';")
+    cur.execute(f"SELECT * FROM articles WHERE user_id=%s;", (user_id, ))
     articles = cur.fetchall()
     db_close(conn, cur)
     return render_template('/lab5/articles.html', articles = articles)
