@@ -1,4 +1,5 @@
 from flask import Flask, url_for, request, redirect, abort, make_response, render_template
+import os
 from werkzeug.exceptions import HTTPException
 import datetime
 from lab1 import lab1
@@ -11,7 +12,11 @@ from lab7 import lab7
 from lab8 import lab8
 
 app = Flask(__name__)
-app.secret_key = 'секретно-секретный секрет'
+
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
