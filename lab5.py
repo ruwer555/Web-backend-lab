@@ -13,7 +13,7 @@ def lab():
 def db_connect():
     if  current_app.config['DB_TYPE'] == 'postgres':
         conn = psycopg2.connect(
-            host = '127.0.0.1',
+            host = 'Ruwer555-43059683.postgres.pythonanywhere-services.com',
             database = 'vladimir_kopylov_knowledge_base',
             user = 'vladimir_kopylov_knowledge_base',
             password = '111'
