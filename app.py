@@ -304,7 +304,7 @@ def index():
                         <li><a href="{ url_for('lab4.lab') }">Четвертая лабораторная</a></li>
                         <li><a href="{ url_for('lab5.lab') }">Пятая лабораторная</a></li>
                         <li><a href="{ url_for('lab6.lab') }">Шестая лабораторная</a></li>
-                        <li><a href="{ url_for('lab1.lab') }">Седьмая лабораторная</a></li>
+                        <li><a href="{ url_for('lab7.lab') }">Седьмая лабораторная</a></li>
                         <li><a href="{ url_for('lab1.lab') }">Восьмая лабораторная</a></li>
                     </ol>
                 </div>
