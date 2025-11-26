@@ -32,7 +32,7 @@ def api():
         
         print(f"API called: method={method}, id={id}")
         
-        if metho33d == 'info':
+        if method == 'info':
             sorted_offices = sorted(offices, key=lambda x: (-x['is_favorite'], x['number']))
             return jsonify({
                 'jsonrpc': '2.0',
