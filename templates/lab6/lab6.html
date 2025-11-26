@@ -1,13 +1,231 @@
 {% extends "base.html" %}
 
-{# номер лабораторной работы: #}
 {% block lab %}Лабораторная работа 6{% endblock %}
 
-{# основной контент: #}
 {% block main %}
-    <h1></h1>
-    <div></div>
-    <ul>
-        <li><a href="/index">Курс</a></li>
-    </ul>
+    <style>
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px;}
+        .book-btn { background: #4CAF50; color: white; }
+        .cancel-btn { background: #f44336; color: white; }
+        .fav-btn { background: #ffc107; color: #333; }
+    </style>
+    <div class="container">
+        <h1>Аренда офисов - JSON-RPC API</h1>
+        
+        <div class="info">
+            {% if session.get('login') %}
+                <p><strong>Вы вошли как:</strong> {{ session.get('login') }}</p>
+                <p><a href="{{ url_for('lab5.logout') }}" style="color: #666;">Выйти</a></p>
+            {% else %}
+                <p style="color: #d32f2f;"><strong>Для бронирования необходимо авторизоваться</strong></p>
+                <p>
+                    <a href="{{ url_for('lab5.login') }}" style="color: #1976d2;">Войти</a> | 
+                    <a href="{{ url_for('lab5.register') }}" style="color: #1976d2;">Зарегистрироваться</a>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="status">
+            <strong>Статус:</strong> <span id="status">Загрузка...</span>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <h2>Список офисов</h2>
+        <div class="info">
+            <p><strong>Все офисы публичные и доступны для просмотра</strong></p>
+            <p>⭐ - избранные офисы показываются первыми</p>
+        </div>
+        
+        <div id="office-list"></div>
+
+        <div class="info">
+            <h3>Статистика</h3>
+            <p>• Всего офисов: <strong>10</strong></p>
+            <p>• Стоимость аренды: <strong>от 1000 до 1900 руб./мес.</strong></p>
+            <p>• Технология: <strong>JSON-RPC 2.0 API</strong></p>
+            <p>• Обновление: <strong>без перезагрузки страницы</strong></p>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = "{{ session.get('login', '') }}";
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ ' + message;
+            errorDiv.className = 'error';
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '✅ ' + message;
+            errorDiv.className = 'success';
+        }
+
+        function clearStatus() {
+            document.getElementById('error').style.display = 'none';
+        }
+
+        function updateStatus(message) {
+            document.getElementById('status').innerHTML = message;
+        }
+
+        function callApi(method, params) {
+            return fetch('/lab6/api', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    'jsonrpc': '2.0',
+                    'method': method,
+                    'params': params,
+                    'id': Math.round(Math.random() * 1000)
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP ошибка: ' + response.status);
+                }
+                return response.json();
+            });
+        }
+
+        function getOfficeList() {
+            updateStatus('Запрашиваем список офисов...');
+            
+            callApi('info', null)
+            .then(data => {
+                if (data.error) {
+                    showError('Ошибка API: ' + data.error.message + ' (код: ' + data.error.code + ')');
+                    return;
+                }
+                
+                if (data.result) {
+                    displayOffices(data.result);
+                    updateStatus('✅ Данные успешно загружены');
+                    clearStatus();
+                } else {
+                    showError('Нет данных в ответе');
+                }
+            })
+            .catch(error => {
+                showError('Ошибка сети: ' + error.message);
+                updateStatus('❌ Ошибка загрузки');
+            });
+        }
+
+        function displayOffices(offices) {
+            const container = document.getElementById('office-list');
+            container.innerHTML = '';
+            
+            let userTotalCost = 0;
+            let userOfficeCount = 0;
+
+            if (offices.length === 0) {
+                container.innerHTML = '<p>Нет доступных офисов</p>';
+                return;
+            }
+
+            offices.forEach(office => {
+                const isOccupied = office.tenant && office.tenant.length > 0;
+                const isMyOffice = office.tenant === currentUser;
+                const isFavorite = office.is_favorite;
+                
+                const officeDiv = document.createElement('div');
+                officeDiv.className = 'office ' + (isOccupied ? 'occupied' : 'free');
+                if (isFavorite) officeDiv.className += ' favorite';
+                
+                let buttons = '';
+                if (!isOccupied) {
+                    buttons = '<button class="book-btn" onclick="bookOffice(' + office.number + ')">Забронировать</button>';
+                } else if (isMyOffice) {
+                    buttons = '<button class="cancel-btn" onclick="cancelOffice(' + office.number + ')">Освободить</button>';
+                    userTotalCost += office.price;
+                    userOfficeCount++;
+                }
+
+                buttons += '<button class="fav-btn" onclick="toggleFavorite(' + office.number + ')">' + 
+                          (isFavorite ? '★ Убрать из избранного' : '☆ В избранное') + '</button>';
+
+                const favoriteStar = isFavorite ? '<span class="favorite-star">★</span>' : '';
+                
+                officeDiv.innerHTML = `
+                    <div class="office-header">
+                        <div class="office-title">${favoriteStar}Офис №${office.number}</div>
+                        <div class="price">${office.price} руб./мес.</div>
+                    </div>
+                    <div class="office-meta">
+                        Статус: <strong>${isOccupied ? 'занят (' + office.tenant + ')' : 'свободен'}</strong><br>
+                        ${office.is_public ? 'Публичный офис' : 'Приватный офис'}
+                    </div>
+                    <div style="margin-top: 10px;">
+                        ${buttons}
+                    </div>
+                `;
+                
+                container.appendChild(officeDiv);
+            });
+
+            if (userOfficeCount > 0) {
+                const totalDiv = document.createElement('div');
+                totalDiv.className = 'info';
+                totalDiv.innerHTML = `
+                    <h3>Ваша аренда:</h3>
+                    <p>Арендовано офисов: <strong>${userOfficeCount}</strong></p>
+                    <p>Общая стоимость: <strong>${userTotalCost} руб./мес.</strong></p>
+                `;
+                container.appendChild(totalDiv);
+            }
+        }
+
+        function bookOffice(officeNumber) {
+            updateStatus('Бронируем офис ' + officeNumber + '...');
+            
+            callApi('booking', officeNumber)
+            .then(data => {
+                if (data.error) {
+                    showError('Ошибка бронирования: ' + data.error.message);
+                } else {
+                    showSuccess('Офис №' + officeNumber + ' успешно забронирован!');
+                    getOfficeList();
+                }
+            })
+            .catch(error => {
+                showError('Ошибка сети: ' + error.message);
+            });
+        }
+
+        function cancelOffice(officeNumber) {
+            updateStatus('Освобождаем офис ' + officeNumber + '...');
+            
+            callApi('cancellation', officeNumber)
+            .then(data => {
+                if (data.error) {
+                    showError('Ошибка отмены: ' + data.error.message);
+                } else {
+                    showSuccess('Офис №' + officeNumber + ' освобожден!');
+                    getOfficeList();
+                }
+            })
+            .catch(error => {
+                showError('Ошибка сети: ' + error.message);
+            });
+        }
+
+        function toggleFavorite(officeNumber) {
+            callApi('toggle_favorite', officeNumber)
+            .then(data => {
+                if (!data.error) {
+                    getOfficeList();
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            getOfficeList();
+            setInterval(getOfficeList, 30000); // Авто-обновление
+        });
+    </script>
 {% endblock %}
