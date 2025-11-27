@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, request, render_template, abort
 lab7 = Blueprint("lab7", __name__)
 
 @lab7.route('/lab7/')
@@ -40,7 +40,7 @@ films = [
         "title": "Inception",
         "title_ru": "Начало",
         "year": "2010",
-        "description": "Вор, который крадет корпоративные секреты через использование технологии общих снов, получает задание植入идею в подсознание человека.",
+        "description": "Вор, который крадет корпоративные секреты через использование технологии общих снов, получает задание подселить идею в подсознание человека.",
     }
 ]
 
@@ -60,6 +60,14 @@ def del_films(id):
         abort(404)
     del films[id]
     return '', 204
+
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
+def put_films(id):
+    if id < 0 or id >= len(films):  # ← ДОБАВЬ ПРОВЕРКУ И ЗДЕСЬ!
+        abort(404)
+    film = request.get_json()
+    films[id] = film
+    return films[id]
 
 
 
