@@ -50,7 +50,7 @@ def get_films():
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_films_id(id):
-    if id > 0  or id >= len(films):
+    if id < 0  or id >= len(films):
         abort(404)
     return films[id]
 
@@ -74,6 +74,8 @@ def put_films(id):
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_films():
     new_film = request.get_json()
+    if new_film['description'] == '':
+        return {'description': 'Заполните описание'}, 400
     films.append(new_film)
     return len(films) - 1, 201
 

@@ -25,7 +25,7 @@ function fillFilmList() {
             let editButton = document.createElement('button');
             editButton.innerText = 'редактировать';
             editButton.onclick = function() {
-                editFilm(currentId, currentTitle);
+                editFilm(currentId);
             }
 
             let delButton = document.createElement('button');
@@ -59,6 +59,7 @@ function deleteFilm(currentId, currentTitle) {
 }
 
 function showModal() {
+    document.getElementById('description-error').innerText = '';
     document.querySelector('.modal').style.display = 'block';
 }
 
@@ -77,6 +78,7 @@ function addFilm() {
     document.getElementById('title-ru').value = '';
     document.getElementById('year').value = '';
     document.getElementById('description').value = '';
+    document.getElementById('description-error').innerText = '';
     showModal();
 }
 
@@ -97,9 +99,17 @@ function sendFilm() {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(film)
     })
-    .then(function() {
-        fillFilmList();
-        hideModal();
+    .then(function(resp) {
+        if(resp.ok) {
+            fillFilmList();
+            hideModal();
+            return  {};
+        }
+        return resp.json();
+    })
+    .then(function(errors) {
+        if(errors.description)
+            document.getElementById('description-error').innerText = errors.description;
     });
 }
 
@@ -109,11 +119,12 @@ function editFilm(currentId) {
         return data.json();
     })
     .then(function (film) {
-        document.getElementById('id').value = id;
+        document.getElementById('id').value = currentId;
         document.getElementById('title').value = film.title;
         document.getElementById('title-ru').value = film.title_ru;
         document.getElementById('year').value = film.year;
         document.getElementById('description').value = film.description;
+        document.getElementById('description-error').innerText = '';
         showModal();
     });
 }
