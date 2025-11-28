@@ -24,6 +24,9 @@ function fillFilmList() {
 
             let editButton = document.createElement('button');
             editButton.innerText = 'редактировать';
+            editButton.onclick = function() {
+                editFilm(currentId, currentTitle);
+            }
 
             let delButton = document.createElement('button');
             delButton.innerText = 'удалить';
@@ -54,14 +57,13 @@ function deleteFilm(currentId, currentTitle) {
         fillFilmList();
     });
 }
-fillFilmList();
 
 function showModal() {
-    document.querySelector('div.modal').style.display = 'block';
+    document.querySelector('.modal').style.display = 'block';
 }
 
 function hideModal() {
-    document.querySelector('div.modal').style.display = 'none';
+    document.querySelector('.modal').style.display = 'none';
 }
 
 function cancel() {
@@ -79,6 +81,7 @@ function addFilm() {
 }
 
 function sendFilm() {
+    const id = document.getElementById('id').value;
     const film = {
         title: document.getElementById('title').value,
         title_ru: document.getElementById('title-ru').value,
@@ -86,8 +89,8 @@ function sendFilm() {
         description: document.getElementById('description').value
     }
 
-    const url = `/lab7/rest-api/films/`;
-    const method = 'POST';
+    const url = `/lab7/rest-api/films/${id}`;
+    const method = id === '' ? 'POST': 'PUT';
 
     fetch(url, {
         method: method,
@@ -99,3 +102,20 @@ function sendFilm() {
         hideModal();
     });
 }
+
+function editFilm(currentId) {
+    fetch(`/lab7/rest-api/films/${currentId}`)
+    .then(function (data) {
+        return data.json();
+    })
+    .then(function (film) {
+        document.getElementById('id').value = id;
+        document.getElementById('title').value = film.title;
+        document.getElementById('title-ru').value = film.title_ru;
+        document.getElementById('year').value = film.year;
+        document.getElementById('description').value = film.description;
+        showModal();
+    });
+}
+
+fillFilmList();
