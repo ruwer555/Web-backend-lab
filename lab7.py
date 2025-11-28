@@ -56,7 +56,7 @@ def get_films_id(id):
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_films(id):
-    if id > 0 or id >= len(films):
+    if id < 0 or id >= len(films):
         abort(404)
     del films[id]
     return '', 204
