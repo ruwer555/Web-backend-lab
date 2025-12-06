@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, abort
+from flask import Blueprint, request, render_template, abort, jsonify
 lab7 = Blueprint("lab7", __name__)
 
 @lab7.route('/lab7/')
@@ -46,7 +46,7 @@ films = [
 
 @lab7.route('/lab7/rest-api/films/', methods=['GET'])
 def get_films():
-    return films
+    return jsonify(films)
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_films_id(id):
