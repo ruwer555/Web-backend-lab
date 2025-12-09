@@ -9,36 +9,47 @@ function fillFilmList() {
         
         for(let i = 0; i < films.length; i++) {
             let currentId = i;
-            let currentTitle = films[i].title_ru;
+            let displayTitle = films[i].title_ru; 
 
             let tr = document.createElement('tr');
 
-            let tdTitle = document.createElement('td');
+            // Русское название
             let tdTitleRus = document.createElement('td');
-            let tdYear = document.createElement('td');
-            let tdActions = document.createElement('td');
-
-            tdTitle.innerText = films[i].title == films[i].title_ru ? '' : films[i].title;
             tdTitleRus.innerText = films[i].title_ru;
+
+            // Оригинальное название (курсив + скобки)
+            let tdTitle = document.createElement('td');
+            let originalTitle = films[i].title;
+            
+            if (originalTitle && originalTitle !== films[i].title_ru) {
+                tdTitle.innerHTML = `<i>(${originalTitle})</i>`;
+            } else {
+                tdTitle.innerHTML = '<span style="color: #ccc;">—</span>'; 
+            }
+
+            let tdYear = document.createElement('td');
             tdYear.innerText = films[i].year;
 
+            let tdActions = document.createElement('td');
+
             let editButton = document.createElement('button');
-            editButton.innerText = 'редактировать';
+            editButton.innerText = 'Редактировать';
             editButton.onclick = function() {
                 editFilm(currentId);
             }
 
             let delButton = document.createElement('button');
-            delButton.innerText = 'удалить';
+            delButton.innerText = 'Удалить';
+            delButton.className = 'del-btn';
             delButton.onclick = function() {
-                deleteFilm(currentId, currentTitle);
+                deleteFilm(currentId, displayTitle);
             };
 
             tdActions.append(editButton);
             tdActions.append(delButton);
 
-            tr.append(tdTitle);
             tr.append(tdTitleRus);
+            tr.append(tdTitle);
             tr.append(tdYear);
             tr.append(tdActions);
 
@@ -71,7 +82,6 @@ function cancel() {
     hideModal();
 }
     
-
 function addFilm() {
     document.getElementById('id').value = '';
     document.getElementById('title').value = '';
@@ -91,8 +101,13 @@ function sendFilm() {
         description: document.getElementById('description').value
     }
 
-    const url = `/lab7/rest-api/films/${id}`;
-    const method = id === '' ? 'POST': 'PUT';
+    let url = '/lab7/rest-api/films/';
+    let method = 'POST';
+
+    if(id !== '') {
+        url = `/lab7/rest-api/films/${id}`;
+        method = 'PUT';
+    }
 
     fetch(url, {
         method: method,
@@ -103,12 +118,12 @@ function sendFilm() {
         if(resp.ok) {
             fillFilmList();
             hideModal();
-            return  {};
+            return {};
         }
         return resp.json();
     })
     .then(function(errors) {
-        if(errors.description)
+        if(errors && errors.description)
             document.getElementById('description-error').innerText = errors.description;
     });
 }

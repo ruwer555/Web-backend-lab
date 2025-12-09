@@ -2,69 +2,122 @@
 
 {# номер лабораторной работы: #}
 {% block lab %}Лабораторная работа 7{% endblock %}
+
 {# основной контент: #}
 {% block main %}
-{% block script %}
-<script src="{{ url_for('static', filename='lab7/main.js')}}"></script>
-<style>
-.modal {
-        display: none;
-        z-index: 100;
-        box-shadow: 3px 3px 5px black;
-        background: white;
-        width: 400px;
-        left: 50%;
-        top: 220px;
-        margin-left: -200px;
-        position: absolute;
-        padding: 20px;
+    <script src="{{ url_for('static', filename='lab7/main.js')}}"></script>
+
+    <style>
+    table {
+        border-spacing: 0;
+        width: 100%;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
     }
+    
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    .modal {
+        display: none; /* Скрыто по умолчанию */
+        position: fixed; /* Фиксированное положение поверх всего */
+        z-index: 1000; /* Поверх всех элементов */
+        left: 0;
+        top: 0;
+        width: 100%; /* На весь экран */
+        height: 100%; /* На весь экран */
+        overflow: auto; /* Скролл если нужно */
+        background-color: rgba(0,0,0,0.4); /* Полупрозрачный черный фон */
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 10% отступа сверху и по центру горизонтально */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 400px; /* Фиксированная ширина окна */
+        border-radius: 8px; /* Скругленные углы */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Тень */
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+    
+    input[type="text"], input[type="number"], textarea {
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    
     .error-message {
         color: red;
+        font-size: 0.9em;
     }
-</style>    
-{% endblock %}
+    
+    .modal-buttons {
+        margin-top: 15px;
+        text-align: right;
+    }
+    </style>    
+
     <h1>Управление фильмами</h1>
+    
+    <button onclick="addFilm()" style="margin-bottom: 10px; padding: 10px 20px; background: green; color: white; border: none; cursor: pointer;">Добавить фильм</button>
+    
     <table>
         <thead>
             <tr>
-                <th colspan="2">Название</th>
                 <th>Название (рус.)</th>
+                <th>Название (оригинал)</th>
                 <th>Год</th>
                 <th>Действие</th>
             </tr>
         </thead>
         <tbody id="film-list"></tbody>
     </table>
-    <div>
-        <button onclick="addFilm()">Добавить фильм</button>
+
+    <div class="modal" id="film-modal">
+        <div class="modal-content">
+            <h2>Фильм</h2>
+            <input type="hidden" id="id">
+            
+            <label>
+                Название фильма на русском:
+                <input type="text" id="title-ru">
+            </label>
+
+            <label>
+                Название фильма на оригинальном языке<br>
+                <small>(если пусто, заполнится русским)</small>:
+                <input type="text" id="title">
+            </label>
+
+            <label>
+                Год выпуска:
+                <input type="number" id="year">
+            </label>
+
+            <label>
+                Описание:
+                <textarea id="description" rows="4"></textarea>
+                <div id="description-error" class="error-message"></div>
+            </label>
+            
+            <div class="modal-buttons">
+                <button onclick="sendFilm()">Сохранить</button>
+                <button onclick="cancel()">Отмена</button>
+            </div>
+        </div>
     </div>
-    <div class='modal'>
-        <input type="hidden" id="id">
-        <label>
-            Название фильма на русском:
-            <input type="text" id="title-ru">
-        </label><br>
-
-        <label>
-            Название фильма на оригинальном языке
-            <i>(если фильм русский, то оставбте пустым):</i>
-            <input type="text" id="title">
-        </label><br>
-
-        <label>
-            Год выпуска:
-            <input type="number" id="year">
-        </label><br>
-
-        <label>
-            Описание:
-            <textarea id="description"></textarea>
-            <div id="description-error" class="error-message"></div>
-        </label><br>
-        
-        <button onclick="sendFilm()">Ок</button>
-        <button onclick="cancel()">Отмена</button>
-
 
 {% endblock %}
