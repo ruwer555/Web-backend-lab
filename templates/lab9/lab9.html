@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 9{% endblock %}
+
+{% block main %}
+<style>
+    body {
+        background: radial-gradient(circle at top, #ff4d4d, #001133);
+        color: #fff;
+    }
+    .panel {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        border-radius: 10px;
+        border: 2px solid #ffcc00;
+    }
+    .lab9-wrapper {
+        position: relative;
+        height: 80vh;
+        margin-top: 20px;
+        border-radius: 15px;
+        border: 3px solid #00ff99;
+        background: rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+    }
+    .box {
+        position: absolute;
+        width: 220px;          /* увеличил размер */
+        cursor: pointer;
+        transition: transform 0.15s;
+    }
+    .box:hover {
+        transform: scale(1.08);
+    }
+    .box.opened {
+        opacity: 0.35;
+        cursor: default;
+    }
+    #gift {
+        max-width: 700px;
+        display: none;
+        margin-top: 10px;
+        border: 4px solid #ffcc00;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+    .reset-link {
+        color: #ffcc00;
+    }
+</style>
+
+<div class="panel">
+    <h1>Лабораторная работа 9. Новогодние подарки</h1>
+    <p>Можно открыть не более 3 коробок.</p>
+    <p>Осталось закрытых коробок: <span id="remaining">{{ remaining }}</span></p>
+    <p><a class="reset-link" href="/lab9/reset">Сбросить и начать заново</a></p>
+</div>
+
+<div class="lab9-wrapper">
+    {% for i in range(10) %}
+        <img src="/static/lab9/box.webp"
+             data-id="{{ i }}"
+             style="{{ coords[i] }};"
+             class="box{% if i in opened %} opened{% endif %}">
+    {% endfor %}
+</div>
+
+<h2>Подарок</h2>
+<p id="text"></p>
+<img id="gift" src="" alt="Подарок">
+
+<script>
+    const boxes = document.querySelectorAll('.box');
+    const text = document.getElementById('text');
+    const giftImg = document.getElementById('gift');
+    const remainingSpan = document.getElementById('remaining');
+
+    boxes.forEach(box => {
+        box.addEventListener('click', () => {
+            if (box.classList.contains('opened')) {
+                return;
+            }
+
+            const id = parseInt(box.dataset.id);
+
+            fetch('/lab9/open_box', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({box_id: id})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) {
+                    text.textContent = data.error;
+                    giftImg.style.display = 'none';
+                } else {
+                    box.classList.add('opened');
+                    box.style.opacity = '0.35';
+                    box.style.cursor = 'default';
+
+                    remainingSpan.textContent = data.remaining;
+                    text.textContent = data.gift_text;
+                    giftImg.src = '/static/' + data.gift_img;
+                    giftImg.style.display = 'block';
+                }
+            })
+            .catch(() => {
+                text.textContent = 'Ошибка запроса';
+                giftImg.style.display = 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}

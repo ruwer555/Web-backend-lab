@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+    {% if errors %}
+        <ul style="color:red;">
+        {% for msg in errors.values() %}
+            <li>{{ msg }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        <p>
+            Заголовок:<br>
+            <input type="text" name="title" value="{{ title or '' }}">
+        </p>
+        <p>
+            Текст:<br>
+            <textarea name="text" rows="5" cols="40">{{ text or '' }}</textarea>
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="is_public"
+                       {% if is_public %}checked{% endif %}>
+                Сделать публичной
+            </label>
+        </p>
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <p><a href="/lab8/articles">К списку статей</a></p>
+
+{% endblock %}

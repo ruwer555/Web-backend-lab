@@ -1,7 +1,14 @@
 from flask import Flask, url_for, request, redirect, abort, make_response, render_template
 import os
+from db.models import Users, Articles
 from werkzeug.exceptions import HTTPException
 import datetime
+from db import db
+from flask_login import LoginManager
+from os import path
+from sqlalchemy import or_
+
+from lab8 import lab8
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
@@ -11,11 +18,40 @@ from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
 from lab9 import lab9
+from RGZ import rgz
 
 app = Flask(__name__)
 
+# --- Flask-Login ---
+login_manager = LoginManager()
+login_manager.login_view = 'lab8.login'
+login_manager.init_app(app)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+# --- конфиг БД ---
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-key-111')
+app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+
+if app.config['DB_TYPE'] == 'postgres':
+    db_name = 'vladimir_kopylov_knowledge_base'
+    db_user = 'vladimir_kopylov_knowledge_base'
+    db_password = '123'
+    host_ip = '127.0.0.1'
+    host_port = 5432
+    app.config['SQLALCHEMY_DATABASE_URI'] = \
+        f'postgresql://{db_user}:{db_password}@{host_ip}:{host_port}/{db_name}'
+else:
+    dir_path = path.dirname(path.realpath(__file__))
+    db_path = path.join(dir_path, "vladimir_kopylov_knowledge_base.db")
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+
+db.init_app(app)
+
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'super-secret-key-111')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 
 app.register_blueprint(lab1)
@@ -27,7 +63,7 @@ app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
 app.register_blueprint(lab9)
-
+app.register_blueprint(rgz)
 
 @app.errorhandler(400)
 def bad_request(err):
@@ -307,8 +343,9 @@ def index():
                         <li><a href="{ url_for('lab5.lab') }">Пятая лабораторная</a></li>
                         <li><a href="{ url_for('lab6.lab') }">Шестая лабораторная</a></li>
                         <li><a href="{ url_for('lab7.lab') }">Седьмая лабораторная</a></li>
-                        <li><a href="{ url_for('lab1.lab') }">Восьмая лабораторная</a></li>
-                        <li><a href="{ url_for('lab1.lab') }">Девятая лабораторная</a></li>
+                        <li><a href="{ url_for('lab8.lab') }">Восьмая лабораторная</a></li>
+                        <li><a href="{ url_for('lab9.lab') }">Девятая лабораторная</a></li>
+                        <li><a href="{ url_for('lab9.lab') }">Расчетно-графическое задание</a></li>
                     </ol>
                 </div>
                 

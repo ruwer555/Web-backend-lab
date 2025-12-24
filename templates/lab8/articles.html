@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+
+    <p>
+        <a href="/lab8/">На главную</a> |
+        <a href="/lab8/create">Создать статью</a>
+    </p>
+
+    {% if articles %}
+        <ul>
+        {% for a in articles %}
+            <li>
+                <strong>{{ a.title }}</strong>
+                (id: {{ a.id }}, автор id: {{ a.login_id }})
+                {% if a.is_public %}[публичная]{% endif %}
+                <br>
+                {{ a.article_text }}
+                <br>
+                <a href="/lab8/edit/{{ a.id }}">Редактировать</a>
+                <a href="/lab8/delete/{{ a.id }}">Удалить</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Статей пока нет.</p>
+    {% endif %}
+
+{% endblock %}

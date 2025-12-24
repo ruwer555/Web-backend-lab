@@ -5,9 +5,17 @@
 
 {# основной контент: #}
 {% block main %}
-    <h1></h1>
-    <div></div>
+    <h1>Лабораторная работа 8. Flask и БД</h1>
+
+    <p>Пользователь: {{ username }}</p>
+
     <ul>
-        <li><a href="/index">Курс</a></li>
+        <li><a href="/lab8/login">Войти</a></li>
+        <li><a href="/lab8/register">Регистрация</a></li>
+        <li><a href="/lab8/articles">Список статей</a></li>
+        <li><a href="/lab8/create">Создать статью</a></li>
+        <li><a href="/lab8/logout">Выйти</a></li>
+        <li><a href="/lab8/search">Поиск по статьям</a></li>
+        <li><a href="/lab8/public">Публичные статьи</a></li>
     </ul>
 {% endblock %}
