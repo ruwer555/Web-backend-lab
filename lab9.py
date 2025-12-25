@@ -45,7 +45,7 @@ def lab():
 
     # для каждого IP просто перемешиваем уже готовый набор позиций
     if client_ip not in positions:
-        coords = BASE_COORDS[:]      # копия
+        coords = BASE_COORDS[:]    
         random.shuffle(coords)
         positions[client_ip] = coords
 

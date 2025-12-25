@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block lab %}Вход в систему (РГЗ){% endblock %}
+
+{% block main %}
+    <div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background: #fff;">
+        <h2 style="text-align: center;">🔐 Вход на склад</h2>
+        
+        {% if error %}
+            <p style="color: red; text-align: center;">{{ error }}</p>
+        {% endif %}
+
+        <!-- ВАЖНО: Никакого JavaScript! Обычная отправка формы -->
+        <form method="post" action="/rgz/login">
+            <div style="margin-bottom: 15px;">
+                <label>Логин:</label>
+                <input type="text" name="login" value="kladovshik" required 
+                       style="width: 100%; padding: 8px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label>Пароль:</label>
+                <input type="password" name="password" value="password" required 
+                       style="width: 100%; padding: 8px; box-sizing: border-box;">
+            </div>
+            
+            <button type="submit" 
+                    style="width: 100%; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; font-size: 16px;">
+                Войти
+            </button>
+        </form>
+    </div>
+{% endblock %}
